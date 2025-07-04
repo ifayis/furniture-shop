@@ -5,8 +5,7 @@ function AdminPage() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    
+  localStorage.removeItem("user");     
       navigate("/login", { replace: true });
     
   };
