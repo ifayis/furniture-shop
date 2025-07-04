@@ -22,7 +22,7 @@ function EditProduct() {
     await fetch(`http://localhost:3001/products/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, price: parseFloat(form.price) }),
+      body: JSON.stringify({ ...form, price: Number(form.price) }),
     });
 
     alert("Product updated successfully!");
