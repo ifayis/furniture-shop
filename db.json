@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "id": "b859",
+      "username": "fayis",
+      "email": "mohammedfayis135@gmail.com",
+      "password": "fayis1234",
+      "role": "admin"
+    },
+    {
+      "id": "400e",
+      "username": "user",
+      "email": "user1@gmail.com",
+      "password": "123456",
+      "role": "user",
+      "isBlocked": false,
+      "isActive": true
+    },
+    {
+      "id": "27de",
+      "username": "afeef",
+      "email": "afeefmaliyekkal14@gmail.com",
+      "password": "afeef123",
+      "role": "user"
+    }
+  ],
+  "products": [
+    {
+      "id": "a0b1",
+      "name": "normal chair",
+      "category": "chair",
+      "price": 599,
+      "image": "normal-chair.jpg",
+      "description": "good looking comfortable chair.",
+      "isActive": true
+    },
+    {
+      "id": "7b73",
+      "name": "normal almirah",
+      "category": "almirah",
+      "price": 8999,
+      "image": "normal-almirah.jpg",
+      "description": "it will help you to arrange your dress in order.",
+      "isActive": true
+    },
+    {
+      "id": "534c",
+      "name": "normal sofa",
+      "category": "sofa",
+      "price": 3479,
+      "image": "normal-sofa.jpeg",
+      "description": "comfortable and affordable stylish sofa",
+      "isActive": true
+    },
+    {
+      "id": "9aa5",
+      "name": "normal bench",
+      "category": "bench",
+      "price": 1419,
+      "image": "normal-bench.jpeg",
+      "description": "nice wooden bench. medium size stable bench",
+      "isActive": true
+    },
+    {
+      "id": "2028",
+      "name": "normal shelves",
+      "category": "shelves",
+      "price": 2099,
+      "image": "normal-shelves.avif",
+      "description": "A good wooden shelve that can be store something like books.",
+      "isActive": true
+    }
+  ]
+}
