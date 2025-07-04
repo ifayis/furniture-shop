@@ -380,12 +380,12 @@ display: flex;
 
 
 @media (max-width: 768px) {
-  .nav-link {
+  .nav-links {
     display: none;
     position: absolute;
     top: 60px;
     right: 0;
-    background-color: #f6f5f5;
+    background-color: #292727;
     flex-direction: column;
     width: 100%;
     padding: 10px 0;
@@ -401,7 +401,6 @@ display: flex;
     display: flex;
   }
 }
-
 
 
 
