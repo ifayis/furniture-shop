@@ -15,13 +15,6 @@
       "role": "user",
       "isBlocked": false,
       "isActive": true
-    },
-    {
-      "id": "27de",
-      "username": "afeef",
-      "email": "afeefmaliyekkal14@gmail.com",
-      "password": "afeef123",
-      "role": "user"
     }
   ],
   "products": [
@@ -29,10 +22,10 @@
       "id": "a0b1",
       "name": "normal chair",
       "category": "chair",
-      "price": 599,
+      "price": 799,
       "image": "normal-chair.jpg",
-      "description": "good looking comfortable chair.",
-      "isActive": true
+      "description": "good looking comfortable chair. worth",
+      "isActive": false
     },
     {
       "id": "7b73",
