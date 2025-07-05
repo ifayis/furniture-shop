@@ -18,7 +18,7 @@ function Productdetails() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
       alert("Kindly login first");
-      navigate("/login");
+      navigate("/register");
       return;
     }
 
