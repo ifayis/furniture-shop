@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import './login.css'
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "", role: 'user' })
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,33 +29,91 @@ function Login() {
 
   }
   return (
-    <div style={{
-      backgroundImage: `url("/images/bgimg.avif")`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      width: '100vw',
-      height: '100vh',
-      display:'flex',
-      justifyContent:'center',
-      alignItems:'center',
-    }} >
+   <div style={{
+  backgroundImage: `url("/images/login-bg.avif")`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  minHeight: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100vw',
+  position: 'relative'
+}}>
 
-       <div className="login-container">
-      <form className="login-form">
-        <h2>LOGIN HERE</h2>
-        <select  onChange={(e) => setForm({ ...form, role: e.target.value })}>
-          <option>user</option>
-          <option>admin</option>
-        </select>
-        <label>E-MAIL</label>
-        <input type="email" placeholder="Enter your Email" onChange={(e) => setForm({ ...form, email: e.target.value })}/>
-        <label>PASSWORD</label>
-        <input type="password" placeholder="Enter the Password" onChange={(e) => setForm({ ...form, password: e.target.value })}/>
-        <button type="submit" style={{color:'black'}} onClick={handleSubmit} >LOGIN</button>
-      </form>
-    </div>
-    </div>
-     
+  <div className="login-container" style={{ position: 'relative', zIndex: 1 }}>
+    <form className="login-form" onSubmit={handleSubmit}>
+      {/* Brand logo */}
+      <div className="brand-logo">
+        <img 
+          src="/images/fur-banner.jpg" 
+          alt="Furniture Store Logo"
+          width="180"
+        />
+      </div>
+
+      <div className="login-header">
+        <h2>Welcome Back</h2>
+        <p>Login to explore our furniture collection</p>
+      </div>
+
+      {/* Role selection with icon */}
+      <div className="form-group">
+        <div className="input-with-icon">
+          <span className="input-icon">👤</span>
+          <select 
+            className="role-select"
+            onChange={(e) => setForm({ ...form, role: e.target.value })}
+            required
+          >
+            <option value="user">user</option>
+            <option value="admin">admin</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Email input with icon */}
+      <div className="form-group">
+        <div className="input-with-icon">
+          <span className="input-icon">✉️</span>
+          <input 
+            type="email" 
+            className="form-input"
+            placeholder="your@email.com"
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <div className="input-with-icon">
+          <span className="input-icon">🔒</span>
+          <input 
+            type="password" 
+            className="form-input"
+            placeholder="••••••••"
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
+         
+        </div>
+      </div>
+
+      <button type="submit" className="login-button">
+        Sign In
+      </button>
+      <div className="login-footer">
+        <p>New to Furniture Store? <a href="/register"><span className='createacc'>Create account</span></a></p>
+        <a className='forgot-pass'>
+          <img src="/images/lock-icon.png" alt="" width="14" />
+          Forgot password?
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
   )
 }
 

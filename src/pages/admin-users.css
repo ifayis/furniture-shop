@@ -1,0 +1,234 @@
+.user-management-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  box-sizing: border-box;
+  color: white;
+}
+
+.admin-content {
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+.admin-header h2 {
+  color: #ffa500;
+  font-size: 1.8rem;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(255, 165, 0, 0.2);
+}
+
+.back-button {
+  background: rgba(255, 165, 0, 0.1);
+  color: #ffa500;
+  border: 1px solid #ffa500;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-button:hover {
+  background: #ffa500;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 165, 0, 0.3);
+}
+
+.table-container {
+  overflow-x: auto;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  flex-grow: 1;
+  background: rgba(20, 20, 20, 0.7);
+  border: 1px solid rgba(255, 165, 0, 0.1);
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(25, 25, 25, 0.8);
+  color: white;
+}
+
+.user-table th {
+  background-color: #ffa500;
+  color: #000;
+  padding: 1.2rem;
+  text-align: left;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+.user-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+}
+
+.user-table tr:last-child td {
+  border-bottom: none;
+}
+
+.user-table tr:hover {
+  background-color: rgba(255, 165, 0, 0.05);
+}
+
+.email-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.user-email {
+  font-weight: 500;
+  color: #fff;
+}
+
+.admin-badge {
+  background: #ffa500;
+  color: #000;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  align-self: flex-start;
+  font-weight: bold;
+}
+
+.status-cell {
+  font-weight: 600;
+}
+
+.status-cell.active {
+  color: #27ae60;
+}
+
+.status-cell.blocked {
+  color: #e74c3c;
+}
+
+.action-cell {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+}
+
+.block-btn {
+  background: rgba(243, 156, 18, 0.2);
+  color: #f39c12;
+  border: 1px solid #f39c12;
+}
+
+.unblock-btn {
+  background: rgba(39, 174, 96, 0.2);
+  color: #27ae60;
+  border: 1px solid #27ae60;
+}
+
+.delete-btn {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255, 165, 0, 0.2);
+  color: white;
+}
+
+.block-btn:hover {
+  background: #f39c12;
+}
+
+.unblock-btn:hover {
+  background: #27ae60;
+}
+
+.delete-btn:hover {
+  background: #e74c3c;
+}
+
+@media (max-width: 768px) {
+  .user-management-container {
+    padding: 1rem;
+  }
+  
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .action-cell {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .user-table th, 
+  .user-table td {
+    padding: 0.8rem;
+  }
+  
+  .admin-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .back-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .user-table {
+    font-size: 0.9rem;
+  }
+  
+  .action-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}

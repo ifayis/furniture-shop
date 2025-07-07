@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import './cart.css'
 
 function Cart() {
   const [cart, setCart] = useState([])
@@ -43,36 +44,90 @@ function Cart() {
 
 
   return (
-    <div className='container2' style={{ padding: "2rem" }}>
-      <h2>🛒 Your Cart</h2>
-      <hr/>
-      <br/>
+    <div className="cart-container" style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
+  <div className="cart-header">
+    <h2 className="cart-title">🛒 Your Shopping Cart</h2>
+    <div className="cart-divider"></div>
+  </div>
 
-      {cart.length === 0 ? <p>No items in cart</p> :
-        <div className='ctnr'>
-          {cart.map(item => (
-            <div key={item.id} style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-              <img className='img3' src={`/images/${item.image}`} alt={item.name} width="100" />
-              <div>
-                <h4>{item.name}</h4>
-                <p>Price: ₹{item.price}</p>
-                <p>
-                  Quantity :
-                  <button className='plus' onClick={() => updateQty(item.id, -1)}>-</button>
-                  {item.qty}
-                  <button className='plus' onClick={() => updateQty(item.id, 1)}>+</button>
-                </p>
-                <button className='remove' onClick={() => removeItem(item.id)}>Remove</button>
-              </div>
-            </div>
-          ))}
-          <h3>Total: ₹{total}</h3>
-        </div>
-      }
-      {cart.length > 0 && (
-        <button className='buy' onClick={() => navigate("/checkout")}>Proceed To Checkout</button>
-      )}
+  {cart.length === 0 ? (
+    <div className="empty-cart">
+      <p>Your cart is empty</p>
+      <button className="continue-shopping" onClick={() => navigate("/")}>
+        Continue Shopping
+      </button>
     </div>
+  ) : (
+    <>
+      <div className="cart-items">
+        {cart.map(item => (
+          <div className="cart-item" key={item.id}>
+            <div className="item-image-container">
+              <img 
+                className="item-image" 
+                src={`/images/${item.image}`} 
+                alt={item.name} 
+                loading="lazy"
+              />
+            </div>
+            <div className="item-details">
+              <h3 className="item-name">{item.name}</h3>
+              <p className="item-price">${item.price.toLocaleString()}</p>
+              
+              <div className="quantity-controls">
+                <button 
+                  className="quantity-btn minus" 
+                  onClick={() => updateQty(item.id, -1)}
+                  aria-label="Decrease quantity"
+                >
+                  
+                </button>
+                <span className="quantity-value">{item.qty}</span>
+                <button 
+                  className="quantity-btn plus" 
+                  onClick={() => updateQty(item.id, 1)}
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+              
+              <button 
+                className="remove-item" 
+                onClick={() => removeItem(item.id)}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="cart-summary">
+        <div className="total-section">
+          <span>Subtotal:</span>
+          <span>${total.toLocaleString()}</span>
+        </div>
+        <div className="total-section">
+          <span>Shipping:</span>
+          <span>FREE</span>
+        </div>
+        <div className="total-section grand-total">
+          <span>Total:</span>
+          <span>${total.toLocaleString()}</span>
+        </div>
+        
+        <button className="checkout-btn" onClick={() => navigate("/checkout")}>
+          Proceed to Checkout
+        </button>
+        
+        <button className="continue-shopping" onClick={() => navigate("/")}>
+          Continue Shopping
+        </button>
+      </div>
+    </>
+  )}
+</div>
   )
 }
 

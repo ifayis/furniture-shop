@@ -22,6 +22,6 @@ body {
   place-items: center;
   min-width: 100vw;
   min-height: 100vh; 
-  background:linear-gradient(to bottom, white,rgb(111, 159, 226) ); 
+  background-color: white; 
   overflow-x: hidden;
 }

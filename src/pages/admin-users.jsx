@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom'
+import './admin-users.css'
 
 function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -32,37 +33,56 @@ function AdminUsers() {
   };
 
   return (
-    <div className='acontainer3' style={{ padding: '2rem' }}>
-      <h2>Manage Users</h2>
-      <button className='btn' style={{width:'20%'}} onClick={ () => navigate('/adminpage')} >Go Back</button>
+    <div className='user-management-container' style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+  <div className='admin-header'>
+    <h2>Manage Users</h2>
+    <button 
+      className='back-button' 
+      onClick={() => navigate('/adminpage')}
+    >
+      ← Go Back
+    </button>
+  </div>
 
-      <table border="1" cellPadding="10" style={{ width:'40%', marginTop: '1rem'}}>
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Block/Unblock</th>
-            <th>Delete</th>
+  <div className='table-container'>
+    <table className='user-table'>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map(user => (
+          <tr key={user.id}>
+            <td className='email-cell'>
+              <span className='user-email'>{user.email}</span>
+              {user.isAdmin && <span className='admin-badge'>Admin</span>}
+            </td>
+            <td className={`status-cell ${user.isBlocked ? 'blocked' : 'active'}`}>
+              {user.isBlocked ? "Blocked" : "Active"}
+            </td>
+            <td className='action-cell'>
+              <button 
+                className={`action-btn ${user.isBlocked ? 'unblock-btn' : 'block-btn'}`}
+                onClick={() => handleBlockToggle(user)}
+              >
+                {user.isBlocked ? "Unblock" : "Block"}
+              </button>
+              <button 
+                className='action-btn delete-btn'
+                onClick={() => handleSoftDelete(user)}
+              >
+                Delete
+              </button>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td><strong>{user.email}</strong></td>
-              <td>{user.isBlocked ? "Blocked" : "Active"}</td>
-              <td>
-                <button className='btn2' onClick={() => handleBlockToggle(user)}>
-                  {user.isBlocked ? "Unblock" : "Block"}
-                </button>
-              </td>
-              <td>
-                <button className='btn2' onClick={() => handleSoftDelete(user)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
   );
 }
 

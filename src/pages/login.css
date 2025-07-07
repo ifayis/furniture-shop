@@ -1,0 +1,206 @@
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+/* Login Container */
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  margin: 1rem;
+  margin-top: 5%;
+}
+
+/* Brand Logo */
+.brand-logo {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.brand-logo img {
+  display: f;
+  height: 100px;
+  width: 300px ;
+  transition: transform 0.3s ease;
+}
+
+.brand-logo:hover img {
+  transform: scale(1.05);
+}
+
+/* Login Header */
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h2 {
+  color: #ff7b00;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.login-header p {
+  color: #333;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* Form Elements */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  position: relative;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon img {
+  position: absolute;
+  left: 15px;
+  z-index: 2;
+  filter: brightness(0) saturate(100%) invert(44%) sepia(92%) saturate(1239%) hue-rotate(353deg) brightness(98%) contrast(101%);
+}
+
+.form-input, .role-select {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 3rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.form-input:focus, .role-select:focus {
+  outline: none;
+  border-color: #ff7b00;
+  box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.2);
+}
+
+/* Login Button */
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: #ff7b00;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.login-button:hover {
+  background-color: #ff9500;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 123, 0, 0.3);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-button img {
+  filter: brightness(0) invert(1);
+}
+
+/* Login Footer */
+.login-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.login-footer p {
+  margin-bottom: 1rem;
+}
+
+.createacc {
+  color: #ff7b00;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.createacc:hover {
+  color: #ff9500;
+  text-decoration: underline;
+}
+
+.forgot-pass {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgot-pass:hover {
+  color: #ff7b00;
+}
+
+.forgot-pass img {
+  filter: brightness(0) saturate(100%) invert(44%) sepia(92%) saturate(1239%) hue-rotate(353deg) brightness(98%) contrast(101%);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 2rem;
+    margin: 1rem;
+    width: 90%;
+  }
+
+  .login-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .form-input, .role-select {
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .login-header p {
+    font-size: 0.85rem;
+  }
+
+  .login-button {
+    padding: 0.9rem;
+    font-size: 0.95rem;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import './navbar.css'
 
 function Navbar() {
   const [user, setUser] = useState(null)
@@ -20,34 +21,48 @@ function Navbar() {
 
   return (
 
-    <div className="nav">
-      <h2 className="logo">🛋️ FurnitureStore</h2>
-       {user && (
-         <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
-        <div></div>
-        <div></div>
-        <div></div>
+      <nav className="navbar">
+      <div className="navbar-container">
+        <h2 className="logo">🛋️ FurnitureStore</h2>
+        
+        {user && (
+          <div 
+            className={`hamburger ${isOpen ? 'active' : ''}`} 
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        )}
+        
+        <div className={`nav-links-container ${isOpen ? 'active' : ''}`}>
+          {user ? (
+            <>
+              <div className="nav-links">
+                <Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>Home</Link>
+                <Link to="/cart" className="nav-link" onClick={() => setIsOpen(false)}>Cart</Link>
+                <Link to="/orders" className="nav-link" onClick={() => setIsOpen(false)}>Orders</Link>
+                <button 
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }} 
+                  className="logout-btn"
+                >
+                  Logout
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="auth-links">
+              <Link to="/register" className="auth-link register">Register</Link>
+              <Link to="/login" className="auth-link login">Login</Link>
+            </div>
+          )}
+        </div>
       </div>
-       )}
-      {user ? (
-  <>
-  <div className={`nav-links ${isOpen ? 'active' : ''}`}>
-    <Link to="/" className='link2'>Home</Link>
-    <Link to="/cart" className='link2'>Cart</Link>
-    <Link to="/orders" className='link2'>Orders</Link>
-    <button onClick={handleLogout} className="logout">Logout</button>
-   </div>
-  </>
-) : (
-  <>
-  <div className='auth-links'>
-    <Link to="/register" className='link1'>Register</Link>
-    <Link to="/login" className='link1'>Login</Link>
-    </div>
-    
-  </>
-)}
-    </div>
+    </nav>
   )
 }
 

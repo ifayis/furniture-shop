@@ -8,13 +8,12 @@
       "role": "admin"
     },
     {
-      "id": "400e",
-      "username": "user",
+      "id": "8b3a",
+      "username": "sdfghj",
       "email": "user1@gmail.com",
       "password": "123456",
       "role": "user",
-      "isBlocked": false,
-      "isActive": true
+      "isBlocked": false
     }
   ],
   "products": [
@@ -51,7 +50,7 @@
       "category": "bench",
       "price": 1419,
       "image": "normal-bench.jpeg",
-      "description": "nice wooden bench. medium size stable bench",
+      "description": "nice wooden bench. medium size stable bench.very comfort to sit",
       "isActive": true
     },
     {
@@ -61,6 +60,33 @@
       "price": 2099,
       "image": "normal-shelves.avif",
       "description": "A good wooden shelve that can be store something like books.",
+      "isActive": true
+    },
+    {
+      "id": "2d72",
+      "name": "chair",
+      "category": "chair",
+      "price": 799,
+      "image": "normal-chair.jpg",
+      "description": "comfortable chair. worth it",
+      "isActive": false
+    },
+    {
+      "id": "cf15",
+      "name": "chair",
+      "category": "chair",
+      "price": 999,
+      "image": "normal-chair.jpg",
+      "description": "good, comfort",
+      "isActive": false
+    },
+    {
+      "id": "dca5",
+      "name": "normal sheorack",
+      "category": "sheorack",
+      "price": 265,
+      "image": "normal-sheorack.jpeg",
+      "description": "good and reliable sheorack.",
       "isActive": true
     }
   ]

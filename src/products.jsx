@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import './products.css'
 
 function Products() {
   const [products, setProducts] = useState([])
@@ -28,46 +29,72 @@ function Products() {
     })
 
   return (
-      <div className="container3">
-         <nav className="heading">
-          <img className="h1" src="./images/furniture.png" alt="furniture" />
-          {/* <Link to='/cart'className="img1" ><img src="./images/carticon.png"/></Link> */}
-         </nav>
-
+     <div className="product-listing-container">
+  <header className="product-header">
+    <nav className="product-nav">
+      <img className="logo-img" src="./images/furniture.png" alt="Furniture Store Logo" />
+    </nav>
+    
+    <div className="search-filter-container">
+      <div className="search-container">
         <input
-          className="search"
-          placeholder="search..."
+          className="search-input"
+          placeholder="Search furniture..."
           onChange={(e) => setSearch(e.target.value)}
         />
+        <span className="search-icon">🔍</span>
+      </div>
 
-        <select className="filter" onChange={(e) => setCategory(e.target.value)}>
-          <option value="All">All</option>
-          <option value="chair">CHAIRS</option>
-          <option value="table">TABLES</option>
-          <option value="sofa">SOFAS</option>
-          <option value="sheorack">RACKS</option>
-          <option value="teapoy">TEAPOYS</option>
-          <option value="bench">BENCHES</option>
-          <option value="almirah">ALMIRAS</option>
-        </select>
+      <div className="filter-controls">
+        <div className="select-wrapper">
+          <select className="filter-select" onChange={(e) => setCategory(e.target.value)}>
+            <option value="All">All Categories</option>
+            <option value="chair">Chairs</option>
+            <option value="table">Tables</option>
+            <option value="sofa">Sofas</option>
+            <option value="sheorack">Racks</option>
+            <option value="teapoy">Teapoys</option>
+            <option value="bench">Benches</option>
+            <option value="almirah">Almirahs</option>
+          </select>
+          <span className="dropdown-icon">▼</span>
+        </div>
 
-        <select className="sort" onChange={(e) => setSort(e.target.value)}>
-          <option value="">sort by</option>
-          <option value="high">high to low</option>
-          <option value="low">low to high</option>
-        </select>
-
-        <div className="pcol">
-          {filterProducts.map(p => (
-            <div className="pd" key={p.id}>
-              <Link to={`/products/${p.id}`}>
-                <img className="img" src={`/images/${p.image}`} alt={p.name} width="100%" />
-                <h4 className="h4">{p.name}</h4>
-              </Link>
-            </div>
-          ))}
+        <div className="select-wrapper">
+          <select className="sort-select" onChange={(e) => setSort(e.target.value)}>
+            <option value="">Sort By</option>
+            <option value="high">Price: High to Low</option>
+            <option value="low">Price: Low to High</option>
+          </select>
+          <span className="dropdown-icon">▼</span>
         </div>
       </div>
+    </div>
+  </header>
+  
+
+  <div className="product-grid">
+    {filterProducts.map(p => (
+      <div className="product-card" key={p.id}>
+        <Link to={`/products/${p.id}`} className="product-link">
+          <div className="product-image-container">
+            <img 
+              className="product-image" 
+              src={`/images/${p.image}`} 
+              alt={p.name} 
+              loading="lazy"
+            />
+            
+          </div>
+          <div className="product-info">
+            <h3 className="product-name">{p.name}</h3>
+            <p className="product-price">${p.price.toFixed(2)}</p>
+          </div>
+        </Link>
+      </div>
+    ))}
+  </div>
+</div>
   )
 }
 

@@ -1,0 +1,176 @@
+/* Registration Page Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Base Container */
+.register-wrapper {
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin: 1rem;
+  margin-top: 5%;
+}
+
+/* Header Styles */
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.register-title {
+  color: #ff7b00;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.register-subtitle {
+  color: #333;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Form Styles */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.register-input {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 2.5rem; /* Left padding increased to make space for icon */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+  color: black;
+}
+
+.password-hint {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.3rem;
+}
+
+/* Button Styles */
+.register-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #ff7b00;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.register-button:hover {
+  background-color: #ff9500;
+  transform: translateY(-2px);
+}
+
+.register-button:active {
+  transform: translateY(0);
+}
+
+.register-button svg {
+  transition: transform 0.3s ease;
+}
+
+.register-button:hover svg {
+  transform: translateX(3px);
+}
+
+/* Footer Styles */
+.register-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.register-footer p {
+  margin-bottom: 0.7rem;
+}
+
+.auth-link {
+  color: #ff7b00;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #ff9500;
+  text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .register-wrapper {
+    padding: 1.5rem;
+    margin: 1rem;
+    width: 90%;
+  }
+
+  .register-title {
+    font-size: 1.8rem;
+  }
+
+  .register-input {
+    padding: 0.8rem 1rem 0.8rem 2.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-wrapper {
+    padding: 1.2rem;
+  }
+
+  .register-title {
+    font-size: 1.5rem;
+  }
+
+  .register-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .register-button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
