@@ -1,4 +1,3 @@
-/* Navbar with Orange, Black, White Theme */
 .navbar {
   background: transparent;
   color: white;
@@ -30,7 +29,6 @@
   transition: all 0.3s ease;
 }
 
-/* Hamburger Menu */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -75,7 +73,6 @@
   transform: translateY(-11px) rotate(-45deg);
 }
 
-/* Navigation Links */
 .nav-links-container {
   display: flex;
   align-items: center;
@@ -120,7 +117,6 @@
   width: 60%;
 }
 
-/* Auth Links */
 .auth-links {
   display: flex;
   gap: 1rem;
@@ -181,7 +177,6 @@
   box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
 }
 
-/* Mobile Styles */
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
@@ -253,13 +248,12 @@
   }
 }
 
-/* Full Page Styles */
 html, body {
   height: 100vh;
   width: 100vw;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: #fff; /* White background for page */
-  color: #333; /* Dark text for content */
+  background-color: #fff;
+  color: #333; 
 }

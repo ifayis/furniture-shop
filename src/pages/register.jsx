@@ -4,7 +4,6 @@ import './register.css'
 
 function Register() {
   const [form, setForm] = useState({ username: '', email: '', password: '', role: 'user' })
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
 
 
@@ -31,8 +30,7 @@ function Register() {
     });
 
     if (res.ok) {
-      alert("Registered Successfully")
-      navigate('/')
+      navigate('/login')
     } else {
       alert('registration failed')
     }

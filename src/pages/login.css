@@ -1,4 +1,3 @@
-/* Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +5,6 @@
   font-family: 'Poppins', 'Segoe UI', sans-serif;
 }
 
-/* Login Container */
 .login-container {
   width: 100%;
   max-width: 450px;
@@ -18,7 +16,6 @@
   margin-top: 5%;
 }
 
-/* Brand Logo */
 .brand-logo {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -35,7 +32,6 @@
   transform: scale(1.05);
 }
 
-/* Login Header */
 .login-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -54,7 +50,6 @@
   opacity: 0.8;
 }
 
-/* Form Elements */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -95,7 +90,6 @@
   box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.2);
 }
 
-/* Login Button */
 .login-button {
   display: flex;
   align-items: center;
@@ -127,7 +121,6 @@
   filter: brightness(0) invert(1);
 }
 
-/* Login Footer */
 .login-footer {
   margin-top: 1.5rem;
   text-align: center;
@@ -169,7 +162,6 @@
   filter: brightness(0) saturate(100%) invert(44%) sepia(92%) saturate(1239%) hue-rotate(353deg) brightness(98%) contrast(101%);
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .login-container {
     padding: 2rem;

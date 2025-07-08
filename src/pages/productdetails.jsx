@@ -39,32 +39,17 @@ function Productdetails() {
   if (!product) return <h2>loading...</h2>
 
   return (
-    // <div className='container2'>
-    //   <img className='img2' src={`/images/${product.image}`} alt={product.name} />
-    //   <div>
-    //     <h1 className='pdn'>{product.name}</h1>
-    //     <h3 className='pdc'><strong>PRICE: {product.price},</strong>  CATEGORY: {product.category}</h3>
-    //     <p className='pdd'>{product.description || "No more description"}</p>
-    //     <label className='pdq'>Quantity </label>
-    //     <input className='qty' type='number' min='1' value={qty} onChange={(e) => setQty(Number(e.target.value))} />
-    //     <br /><br />
-    //     <button className='pdbtn1' onClick={addCart}>ADD TO CART</button>
-    //     <button className="cbtn2" onClick={() => navigate("/cart")}>CART</button>
-    //   </div>
-    // </div>
-
     <div className="product-detail-container">
       <div>
     <img 
       className="product-main-image" 
       src={`/images/${product.image}`} 
       alt={product.name} 
-      loading="eager"  // Important image, load immediately
+      loading="eager"
       width="600"
       height="600"
     />
     <div className="image-thumbnails">
-      {/* Add thumbnail images here if available */}
     </div>
   </div>
 

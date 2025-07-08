@@ -4,7 +4,6 @@ import './login.css'
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "", role: 'user' })
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +43,6 @@ function Login() {
 
   <div className="login-container" style={{ position: 'relative', zIndex: 1 }}>
     <form className="login-form" onSubmit={handleSubmit}>
-      {/* Brand logo */}
       <div className="brand-logo">
         <img 
           src="/images/fur-banner.jpg" 
@@ -58,7 +56,6 @@ function Login() {
         <p>Login to explore our furniture collection</p>
       </div>
 
-      {/* Role selection with icon */}
       <div className="form-group">
         <div className="input-with-icon">
           <span className="input-icon">👤</span>
@@ -73,7 +70,6 @@ function Login() {
         </div>
       </div>
 
-      {/* Email input with icon */}
       <div className="form-group">
         <div className="input-with-icon">
           <span className="input-icon">✉️</span>
