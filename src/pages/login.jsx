@@ -7,10 +7,10 @@ function Login() {
   const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.email || !form.password) {
-      alert('fill all the data first')
-      return;
-    }
+    // if (!form.email || !form.password) {
+    //   alert('fill all the data first')
+    //   return;
+    // }
 
     const res = await fetch(`http://localhost:3001/users?email=${form.email}&password=${form.password}&role=${form.role}`);
     const data = await res.json()
@@ -23,7 +23,7 @@ function Login() {
         navigate("/");
       }
     } else {
-      alert('invalid details, register')
+      navigate('/register')
     }
 
   }

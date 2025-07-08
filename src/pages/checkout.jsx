@@ -10,7 +10,6 @@ function Checkout() {
   useEffect(() => {
       const user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
-      alert("Please login first")
       navigate('/login')
       return
     }
@@ -26,7 +25,6 @@ function Checkout() {
     const previousOrders = JSON.parse(localStorage.getItem(orderKey)) || []
 
     if (cart.length === 0) {
-      alert("Add items to the cart")
       navigate("/products")
       return
     }

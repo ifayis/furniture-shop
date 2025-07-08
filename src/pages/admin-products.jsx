@@ -21,7 +21,6 @@ function AdminProducts() {
 
   const handleAdd = async () => {
     if (!form.name || !form.price || !form.category || !form.image) {
-      alert("Fill all fields");
       return;
     }
 

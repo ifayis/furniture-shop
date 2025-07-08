@@ -8,14 +8,6 @@
       "role": "admin"
     },
     {
-      "id": "8b3a",
-      "username": "sdfghj",
-      "email": "user1@gmail.com",
-      "password": "123456",
-      "role": "user",
-      "isBlocked": false
-    },
-    {
       "id": "4a4a",
       "username": "Afeef.M",
       "email": "afeefmaliyekkal14@gmail.com",

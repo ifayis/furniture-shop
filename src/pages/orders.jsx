@@ -10,7 +10,6 @@ function Orders() {
     useEffect (() => {
      const user = JSON.parse(localStorage.getItem("user"))
       if (!user) {
-      alert("Please login to view your orders")
       navigate("/login")
       return
     }

@@ -15,7 +15,6 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("user")
-    alert("Logged out successfully")
     navigate('/login',{replace:true})
   }
 

@@ -18,8 +18,7 @@ function Productdetails() {
   const addCart = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
-      alert("Kindly login first");
-      navigate("/register");
+      navigate("/login");
       return;
     }
 
@@ -34,7 +33,6 @@ function Productdetails() {
     }
 
     localStorage.setItem(key, JSON.stringify(cart));
-    alert("Added to cart");
   };
   if (!product) return <h2>loading...</h2>
 

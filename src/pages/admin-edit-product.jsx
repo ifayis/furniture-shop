@@ -25,8 +25,6 @@ function EditProduct() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, price: Number(form.price) }),
     });
-
-    alert("Product updated successfully!");
     navigate("/admin-products");
   };
 

@@ -11,7 +11,6 @@ function Cart() {
     const user = JSON.parse(localStorage.getItem('user'))
     console.log("User ", user)
     if (!user) {
-      alert('proceed to login')
       navigate('/login')
       return;
     }
