@@ -20,20 +20,19 @@ function Navbar() {
 
   return (
 
-      <nav className="navbar">
+       <nav className="navbar">
       <div className="navbar-container">
         <h2 className="logo">🛋️ FurnitureStore</h2>
         
-        {user && (
-          <div 
-            className={`hamburger ${isOpen ? 'active' : ''}`} 
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        )}
+        {/* Move hamburger outside of user conditional */}
+        <div 
+          className={`hamburger ${isOpen ? 'active' : ''}`} 
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
         
         <div className={`nav-links-container ${isOpen ? 'active' : ''}`}>
           {user ? (
@@ -55,8 +54,8 @@ function Navbar() {
             </>
           ) : (
             <div className="auth-links">
-              <Link to="/register" className="auth-link register">Register</Link>
-              <Link to="/login" className="auth-link login">Login</Link>
+              <Link to="/register" className="auth-link register" onClick={() => setIsOpen(false)}>Register</Link>
+              <Link to="/login" className="auth-link login" onClick={() => setIsOpen(false)}>Login</Link>
             </div>
           )}
         </div>
