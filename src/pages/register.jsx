@@ -38,29 +38,7 @@ function Register() {
 
 
   return (
-   <div style={{
-  backgroundImage: `url("/images/login-bg.avif")`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100vw',
-  position: 'relative'
-}}>
-
-  <div style={{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    zIndex: 0
-  }}></div>
-
+   <div className="register-bg-wrapper">
   <div className="register-wrapper" style={{ position: 'relative', zIndex: 1 }}>
     <div className="register-header">
       <h1 className='register-title'>Create Your Account</h1>
@@ -69,7 +47,6 @@ function Register() {
 
     <form className='register-form' onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="form-label">Username</label>
         <div className="input-container">
           <span className="input-icon">👤</span>
           <input 
@@ -84,7 +61,6 @@ function Register() {
       </div>
 
       <div className="form-group">
-        <label className="form-label">Email Address</label>
         <div className="input-container">
           <span className="input-icon">✉️</span>
           <input 
@@ -99,7 +75,6 @@ function Register() {
       </div>
 
       <div className="form-group">
-        <label className="form-label">Password</label>
         <div className="input-container">
           <span className="input-icon">🔒</span>
           <input 

@@ -29,23 +29,23 @@ function Products() {
     })
 
   return (
-     <div className="product-listing-container">
-  <header className="product-header">
-    <nav className="product-nav">
-      <img className="logo-img" src="./images/furniture.png" alt="Furniture Store Logo" />
-    </nav>
-    
-    <div className="search-filter-container">
-      <div className="search-container">
-        <input
-          className="search-input"
-          placeholder="Search furniture..."
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <span className="search-icon">🔍</span>
+    <div className="product-listing-container">
+      {/* Hero Banner */}
+      <div className="hero-banner">
+        <h1>Transform Your Space with LuxeLiving</h1>
+        <p>Premium Furniture. Timeless Style.</p>
       </div>
 
-      <div className="filter-controls">
+      {/* Search & Filters */}
+      <div className="search-filter-container">
+        <div className="search-container">
+          <input
+            className="search-input"
+            placeholder="Search furniture..."
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
         <div className="select-wrapper">
           <select className="filter-select" onChange={(e) => setCategory(e.target.value)}>
             <option value="All">All Categories</option>
@@ -57,7 +57,6 @@ function Products() {
             <option value="bench">Benches</option>
             <option value="almirah">Almirahs</option>
           </select>
-          <span className="dropdown-icon">▼</span>
         </div>
 
         <div className="select-wrapper">
@@ -66,35 +65,54 @@ function Products() {
             <option value="high">Price: High to Low</option>
             <option value="low">Price: Low to High</option>
           </select>
-          <span className="dropdown-icon">▼</span>
         </div>
       </div>
-    </div>
-  </header>
-  
 
-  <div className="product-grid">
-    {filterProducts.map(p => (
-      <div className="product-card" key={p.id}>
-        <Link to={`/products/${p.id}`} className="product-link">
-          <div className="product-image-container">
-            <img 
-              className="product-image" 
-              src={`/images/${p.image}`} 
-              alt={p.name} 
-              loading="lazy"
-            />
-            
-          </div>
-          <div className="product-info">
-            <h3 className="product-name">{p.name}</h3>
-            <p className="product-price">${p.price.toFixed(2)}</p>
-          </div>
-        </Link>
+      {/* Posters */}
+      <div className="poster-row">
+        <img src="/images/banner-sofa.jpg" alt="sofa" />
+        <img src="/images/banner-table.webp" alt="table" />
+        <img src="/images/banner-interior.jpeg" alt="interior" />
       </div>
-    ))}
+
+      
+
+      {/* Horizontal Product Scroll */}
+      <div className="product-scroll">
+        {filterProducts.map(p => (
+          <div className="product-card" key={p.id}>
+            <Link to={`/products/${p.id}`} className="product-link">
+              <div className="product-image-container">
+                <img 
+                  className="product-image" 
+                  src={`/images/${p.image}`} 
+                  alt={p.name} 
+                  loading="lazy"
+                />
+              </div>
+              <div className="product-info">
+                <h3 className="product-name">{p.name}</h3>
+                <p className="product-price">${p.price.toFixed(2)}</p>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+      {/* Promotional Banner */}
+<div className="promo-banner">
+  <div className="promo-content">
+    <h2>🎉 Mid-Year Mega Sale!</h2>
+    <p>Get up to <span>40% OFF</span> on selected items. Hurry, limited stock!</p>
+    <Link to="/" className="promo-btn">Shop Now</Link>
   </div>
 </div>
+
+
+      {/* Footer */}
+      <footer className="footer">
+        <p>© 2025 LuxeLiving. All rights reserved.</p>
+      </footer>
+    </div>
   )
 }
 

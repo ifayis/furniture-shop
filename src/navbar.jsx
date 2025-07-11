@@ -20,11 +20,10 @@ function Navbar() {
 
   return (
 
-       <nav className="navbar">
+        <nav className="navbar">
       <div className="navbar-container">
-        <h2 className="logo">🛋️ FurnitureStore</h2>
-        
-        {/* Move hamburger outside of user conditional */}
+        <h2 className="logo"> LUXELIVING</h2>
+
         <div 
           className={`hamburger ${isOpen ? 'active' : ''}`} 
           onClick={() => setIsOpen(!isOpen)}
@@ -33,25 +32,23 @@ function Navbar() {
           <span></span>
           <span></span>
         </div>
-        
+
         <div className={`nav-links-container ${isOpen ? 'active' : ''}`}>
           {user ? (
-            <>
-              <div className="nav-links">
-                <Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>Home</Link>
-                <Link to="/cart" className="nav-link" onClick={() => setIsOpen(false)}>Cart</Link>
-                <Link to="/orders" className="nav-link" onClick={() => setIsOpen(false)}>Orders</Link>
-                <button 
-                  onClick={() => {
-                    handleLogout();
-                    setIsOpen(false);
-                  }} 
-                  className="logout-btn"
-                >
-                  Logout
-                </button>
-              </div>
-            </>
+            <div className="nav-links">
+              <Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>Home</Link>
+              <Link to="/cart" className="nav-link" onClick={() => setIsOpen(false)}>Cart</Link>
+              <Link to="/orders" className="nav-link" onClick={() => setIsOpen(false)}>Orders</Link>
+              <button 
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }} 
+                className="logout-btn"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
             <div className="auth-links">
               <Link to="/register" className="auth-link register" onClick={() => setIsOpen(false)}>Register</Link>

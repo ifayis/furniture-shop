@@ -43,7 +43,7 @@ function Cart() {
 
 
   return (
-    <div className="cart-container" style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
+    <div className="cart-container">
   <div className="cart-header">
     <h2 className="cart-title">🛒 Your Shopping Cart</h2>
     <div className="cart-divider"></div>
@@ -79,7 +79,7 @@ function Cart() {
                   onClick={() => updateQty(item.id, -1)}
                   aria-label="Decrease quantity"
                 >
-                  
+                  -
                 </button>
                 <span className="quantity-value">{item.qty}</span>
                 <button 

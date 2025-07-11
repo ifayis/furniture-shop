@@ -28,29 +28,12 @@ function Login() {
 
   }
   return (
-   <div style={{
-  backgroundImage: `url("/images/login-bg.avif")`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100vw',
-  position: 'relative'
-}}>
+   
+  <div className="login-bg-wrapper">
 
   <div className="login-container" style={{ position: 'relative', zIndex: 1 }}>
     <form className="login-form" onSubmit={handleSubmit}>
-      <div className="brand-logo">
-        <img 
-          src="/images/fur-banner.jpg" 
-          alt="Furniture Store Logo"
-          width="180"
-        />
-      </div>
-
+      
       <div className="login-header">
         <h2>Welcome Back</h2>
         <p>Login to explore our furniture collection</p>
