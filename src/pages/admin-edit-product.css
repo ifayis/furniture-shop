@@ -23,7 +23,7 @@
 }
 
 .edit-header h2 {
-  color: #ffa500;
+  color: #289c33;
   margin-bottom: 1.5rem;
   font-size: 2rem;
   font-weight: 700;
@@ -40,7 +40,7 @@
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: #ffa500;
+  background: #289c33;
   border-radius: 3px;
 }
 
@@ -70,7 +70,7 @@
 .form-textarea:focus, 
 .form-select:focus {
   outline: none;
-  border-color: #ffa500;
+  border-color: #289c33;
   box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
   background: white;
 }
@@ -117,7 +117,7 @@
 }
 
 .update-btn {
-  background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+  background: linear-gradient(135deg, #289c33 0%, #235928 100%);
   color: white;
   border: none;
   box-shadow: 0 4px 6px rgba(255, 165, 0, 0.3);
@@ -130,8 +130,8 @@
 
 .cancel-btn {
   background: transparent;
-  color: #ffa500;
-  border: 2px solid #ffa500;
+  color: #289c33;
+  border: 2px solid #289c33;
 }
 
 .cancel-btn:hover {

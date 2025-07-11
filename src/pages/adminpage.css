@@ -64,7 +64,7 @@
 }
 
 .admin-btn:hover {
-  background: #f1800f;
+  background: #27ae60;
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -82,11 +82,11 @@
   margin-top: 20px;
   background: rgba(231, 76, 60, 0.1);
   border-color: rgba(231, 76, 60, 0.3);
-  color: #e74c3c;
+  color: #38c630;
 }
 
 .logout-btn:hover {
-  background: #e74c3c;
+  background: #288f45;
   color: white;
 }
 
