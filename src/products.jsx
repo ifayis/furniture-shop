@@ -32,7 +32,7 @@ function Products() {
     <div className="product-listing-container">
       {/* Hero Banner */}
       <div className="hero-banner">
-        <h1>Transform Your Space with LuxeLiving</h1>
+        <h1>Transform Your Space with LUXLIVING</h1>
         <p>Premium Furniture. Timeless Style.</p>
       </div>
 
