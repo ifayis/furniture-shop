@@ -73,6 +73,11 @@ function Products() {
         <img src="/images/banner-sofa.jpg" alt="sofa" />
         <img src="/images/banner-table.webp" alt="table" />
         <img src="/images/banner-interior.jpeg" alt="interior" />
+        <img src="/images/banner1.webp" alt="interior" />
+        <img src="/images/banner2.webp" alt="interior" />
+        <img src="/images/banner3.webp" alt="interior" />
+        <img src="/images/banner4.jpeg" alt="interior" />
+
       </div>
 
       

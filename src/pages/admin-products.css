@@ -117,7 +117,7 @@
 .primary-btn:hover {
   background-color: white;
   transform: translateY(-2px);
-  color: #289c33;
+  color: #f5f8f5;
   border: 1px #207f2d;
 }
 

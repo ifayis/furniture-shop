@@ -44,7 +44,7 @@
       "name": "normal almirah",
       "category": "almirah",
       "price": 179,
-      "image": "https://png.pngtree.com/png-vector/20241030/ourlarge/pngtree-almirah-isolate-on-transparent-background-png-image_14181579.png",
+      "image": "normal-almirah.jpeg",
       "description": "A durable and spacious almirah made from high-quality engineered wood, perfect for organizing clothes, linens, or daily essentials. Features multiple shelves and a secure lockable door, making it ideal for bedrooms or storage rooms. Simple design blends well with any interior décor.\n\n",
       "isActive": true
     },
@@ -52,27 +52,27 @@
       "id": "534c",
       "name": "normal sofa",
       "category": "sofa",
-      "price": 3479,
+      "price": 218,
       "image": "normal-sofa.jpeg",
-      "description": "comfortable and affordable stylish sofa",
+      "description": "A comfortable and stylish three-seater sofa designed for everyday use. Built with a sturdy wooden frame and cushioned with soft, high-density foam for lasting comfort. Upholstered in smooth fabric, this sofa adds a cozy touch to your living room while offering ample seating space.",
       "isActive": true
     },
     {
       "id": "9aa5",
       "name": "normal bench",
       "category": "bench",
-      "price": 1419,
+      "price": 89,
       "image": "normal-bench.jpeg",
-      "description": "nice wooden bench. medium size stable bench.very comfort to sit",
+      "description": "A simple and sturdy wooden bench ideal for indoor or outdoor use. Crafted from solid wood with a smooth finish, it offers reliable seating for two to three people. Its minimalist design makes it a versatile choice for entryways, gardens, dining spaces, or balconies.\n\n",
       "isActive": true
     },
     {
       "id": "2028",
       "name": "normal shelves",
       "category": "shelves",
-      "price": 2099,
-      "image": "normal-shelves.avif",
-      "description": "A good wooden shelve that can be store something like books.",
+      "price": 56,
+      "image": "normal-shelves.jpeg",
+      "description": "A practical and space-saving wall-mounted shelf unit made from engineered wood. Ideal for displaying books, décor, or daily essentials. Its clean and minimal design fits seamlessly into living rooms, bedrooms, or offices, helping keep your space tidy and organized.",
       "isActive": true
     },
     {
@@ -97,9 +97,36 @@
       "id": "dca5",
       "name": "normal sheorack",
       "category": "sheorack",
-      "price": 265,
-      "image": "normal-sheorack.jpeg",
-      "description": "good and reliable sheorack.",
+      "price": 125,
+      "image": "normal-sheorack.webp",
+      "description": "A compact and functional shoe rack designed to neatly store and organize your footwear. Made from durable engineered wood with a simple open-shelf design, it holds up to 8–10 pairs of shoes. Perfect for entryways, hallways, or closets to keep your space clutter-free.",
+      "isActive": true
+    },
+    {
+      "id": "e3b8",
+      "name": "normal table",
+      "category": "table",
+      "price": 97,
+      "image": "normal-table.jpg",
+      "description": "A sturdy and versatile wooden table with a smooth, flat surface and classic design. Ideal for everyday use as a study table, work desk, or dining setup. Its compact structure fits well in any room, offering durability and functionality with a minimal footprint.",
+      "isActive": true
+    },
+    {
+      "id": "7811",
+      "name": "normal teapoy",
+      "category": "teapoy",
+      "price": 70,
+      "image": "normal-teapoy.jpg",
+      "description": "A simple and elegant teapoy crafted from quality wood, perfect for serving tea or snacks. Its compact design with a smooth tabletop and sturdy legs makes it ideal for living rooms or casual seating areas. A functional addition to your home with a traditional touch.\n\n",
+      "isActive": true
+    },
+    {
+      "id": "53c1",
+      "name": "normal chair",
+      "category": "chair",
+      "price": 24,
+      "image": "normal-chair.jpg",
+      "description": "A comfortable and durable wooden chair designed for everyday use. Featuring a straight backrest and a smooth finish, this chair blends simplicity with functionality. Ideal for dining, study, or office spaces, it offers stable support and classic style.",
       "isActive": true
     }
   ]
