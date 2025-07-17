@@ -12,19 +12,13 @@
       "username": "Afeef.M",
       "email": "afeefmaliyekkal14@gmail.com",
       "password": "afeef123",
-      "role": "user"
+      "role": "user",
+      "isBlocked": false
     },
     {
       "id": "c4ac",
       "username": "user3",
       "email": "user3@gmail.com",
-      "password": "123456",
-      "role": "user"
-    },
-    {
-      "id": "b037",
-      "username": "fayis",
-      "email": "fayis1@gmail.com",
       "password": "123456",
       "role": "user"
     }
@@ -43,7 +37,7 @@
       "id": "7b73",
       "name": "normal almirah",
       "category": "almirah",
-      "price": 179,
+      "price": 178.98,
       "image": "normal-almirah.jpeg",
       "description": "A durable and spacious almirah made from high-quality engineered wood, perfect for organizing clothes, linens, or daily essentials. Features multiple shelves and a secure lockable door, making it ideal for bedrooms or storage rooms. Simple design blends well with any interior décor.\n\n",
       "isActive": true

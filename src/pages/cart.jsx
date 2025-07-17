@@ -70,9 +70,7 @@ function Cart() {
               />
             </div>
             <div className="item-details">
-              <h3 className="item-name">{item.name}</h3>
-              <p className="item-price">${item.price.toLocaleString()}</p>
-              
+              <h3>{item.name}</h3>              
               <div className="quantity-controls">
                 <button 
                   className="quantity-btn minus" 
@@ -97,6 +95,8 @@ function Cart() {
               >
                 Remove
               </button>
+            <p className="item-price">${item.price.toLocaleString()}</p>
+
             </div>
           </div>
         ))}
