@@ -9,7 +9,8 @@ function Products() {
   const [sort, setSort] = useState("")
 
   useEffect(() => {
-    fetch("http://localhost:3001/products")
+    fetch("https://furniture-shop-asjh.onrender.com/products")
+
       .then(res => res.json())
       .then(data => {
         const active = data.filter(p=> p.isActive !== false)
