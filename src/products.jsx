@@ -10,7 +10,6 @@ function Products() {
 
   useEffect(() => {
     fetch("https://furniture-shop-asjh.onrender.com/products")
-
       .then(res => res.json())
       .then(data => {
         const active = data.filter(p=> p.isActive !== false)

@@ -14,7 +14,7 @@ function AdminProducts() {
   }, []);
 
   const fetchProducts = () => {
-    fetch("http://localhost:3001/products")
+    fetch("https://furniture-shop-asjh.onrender.com/products")
       .then(res => res.json())
       .then(data => setProducts(data.filter(p => p.isActive !== false)));
   };
@@ -31,7 +31,7 @@ function AdminProducts() {
     }
 
     const newProduct = { ...form, price: Number(form.price), isActive: true };
-    await fetch("http://localhost:3001/products", {
+    await     fetch("https://furniture-shop-asjh.onrender.com/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newProduct)
@@ -45,7 +45,8 @@ function AdminProducts() {
     const product = products.find(p => p.id === id);
     if (!product) return;
 
-    await fetch(`http://localhost:3001/products/${id}`, {
+    await fetch(`https://furniture-shop-asjh.onrender.com/products${id}`
+, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isActive: false })

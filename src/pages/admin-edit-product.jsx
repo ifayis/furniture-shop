@@ -14,13 +14,13 @@ function EditProduct() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:3001/products/${id}`)
+    fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`)
       .then((res) => res.json())
       .then((data) => setForm(data));
   }, [id]);
 
   const handleUpdate = async () => {
-    await fetch(`http://localhost:3001/products/${id}`, {
+    await fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, price: Number(form.price) }),

@@ -7,13 +7,13 @@ function AdminUsers() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch("http://localhost:3001/users")
+    fetch("https://furniture-shop-asjh.onrender.com/users")
       .then(res => res.json())
       .then(data => setUsers(data.filter(u => u.isActive !== false && u.role !== 'admin')));
   }, []);
 
   const handleBlockToggle = async (user) => {
-    await fetch(`http://localhost:3001/users/${user.id}`, {
+    await fetch(`https://furniture-shop-asjh.onrender.com/users/${user.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isBlocked: !user.isBlocked })
@@ -23,7 +23,7 @@ function AdminUsers() {
   };
 
   const handleSoftDelete = async (user) => {
-    await fetch(`http://localhost:3001/users/${user.id}`, {
+    await fetch(`https://furniture-shop-asjh.onrender.com/users/${user.id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isActive: false })
