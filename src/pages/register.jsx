@@ -23,7 +23,7 @@ function Register() {
       return;
     }
 
-    const res = await fetch('http://localhost:3001/users', {
+    const res = await fetch('https://furniture-shop-asjh.onrender.com/users', {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(form)

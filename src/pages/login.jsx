@@ -12,7 +12,7 @@ function Login() {
     //   return;
     // }
 
-    const res = await fetch(`http://localhost:3001/users?email=${form.email}&password=${form.password}&role=${form.role}`);
+    const res = await fetch(`https://furniture-shop-asjh.onrender.com/users?email=${form.email}&password=${form.password}&role=${form.role}`);
     const data = await res.json()
 
     if (data.length > 0) {
