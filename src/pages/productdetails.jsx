@@ -9,7 +9,7 @@ function Productdetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-        fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`)
+      fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`)
       .then((res) => res.json())
       .then(data => setProduct(data))
       .catch(err => console.log("error fetching product: ", err))
