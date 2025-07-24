@@ -92,7 +92,6 @@ function Products() {
                   className="product-image" 
                   src={`/images/${p.image}`} 
                   alt={p.name} 
-                  loading="lazy"
                 />
               </div>
               <div className="product-info">
