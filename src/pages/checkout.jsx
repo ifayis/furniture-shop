@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import './checkout.css'
 
 function Checkout() {
@@ -10,6 +11,7 @@ function Checkout() {
   useEffect(() => {
       const user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
+      toast.info('login to countinue.')
       navigate('/login')
       return
     }
@@ -25,6 +27,7 @@ function Checkout() {
     const previousOrders = JSON.parse(localStorage.getItem(orderKey)) || []
 
     if (cart.length === 0) {
+      toast.warning('no items available')
       navigate("/products")
       return
     }
@@ -39,7 +42,7 @@ function Checkout() {
     const updatedOrders = [...previousOrders, newOrder];
     localStorage.setItem(orderKey, JSON.stringify(updatedOrders))
     localStorage.removeItem(cartKey)
-    alert("Payment successful, order placed")
+    toast.success("Payment successful, order placed")
     navigate('/orders')
   }
 

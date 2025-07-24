@@ -1,4 +1,5 @@
 import './App.css'
+import { ToastContainer } from 'react-toastify'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Register from './pages/register'
 import Login from './pages/login'
@@ -22,7 +23,8 @@ function App() {
   return (
     <>
      {!hideNavbar && <Navbar />}
-      <Routes>
+        <ToastContainer position="top-center" autoClose={1000} />   
+        <Routes>
         <Route path='/register' element={< Register />} />
         <Route path='/login' element={< Login />} />
         <Route path='/' element={< Products />} />

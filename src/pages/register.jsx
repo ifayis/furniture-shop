@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import './register.css'
 
 function Register() {
@@ -15,11 +16,11 @@ function Register() {
     e.preventDefault();
     
     if (!form.username || !form.email || !form.password) {
-      alert("fill all the data first.")
+      toast.info("fill all the data first.")
     }
 
     if (!isValidEmail(form.email)) {
-      alert("Enter a valid Gmail address (e.g., example@gmail.com)");
+      toast.warning("Enter a valid Gmail address (e.g., example@gmail.com)");
       return;
     }
 
@@ -30,9 +31,10 @@ function Register() {
     });
 
     if (res.ok) {
+      toast.success('registered suuceesfully !')
       navigate('/login')
     } else {
-      alert('registration failed')
+      toast.error('registration failed')
     }
   }
 

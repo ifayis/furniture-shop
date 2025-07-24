@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
+import { toast } from 'react-toastify'
 import './orders.css'
 
 function Orders() {
@@ -10,6 +11,7 @@ function Orders() {
     useEffect (() => {
      const user = JSON.parse(localStorage.getItem("user"))
       if (!user) {
+      toast.info('login to countinue.')
       navigate("/login")
       return
     }

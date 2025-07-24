@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import './login.css'
 
 function Login() {
@@ -23,6 +24,7 @@ function Login() {
         navigate("/");
       }
     } else {
+      toast.warning('Wrong data. Register firt')
       navigate('/register')
     }
 

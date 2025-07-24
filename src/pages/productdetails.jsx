@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import './productdetails.css'
 
 function Productdetails() {
@@ -18,8 +19,11 @@ function Productdetails() {
   const addCart = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
+      toast.warning('login to countinue.')
       navigate("/login");
       return;
+    }else{
+      toast.info('item added to cart')
     }
 
     const key = `cart-${user.email}`;
