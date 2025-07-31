@@ -103,7 +103,6 @@
   font-size: 1.1rem;
 }
 
-/* === Buttons Match Previous Pages === */
 .checkout-actions {
   display: flex;
   flex-direction: column;
@@ -112,6 +111,7 @@
   margin-top: 2rem;
 }
 
+/* Reusable button styles */
 .primary-btn,
 .secondary-btn {
   all: unset;
@@ -120,6 +120,7 @@
   font-weight: 600;
   text-align: center;
   cursor: pointer;
+  width: 50vw;
   min-width: 260px;
   display: inline-flex;
   align-items: center;
@@ -127,36 +128,22 @@
   transition: all 0.3s ease;
 }
 
-/* Green glow primary */
+/* Primary button */
 .primary-btn {
-  background: linear-gradient(135deg, #43a047, #2e7d32);
-  color: #fff;
+  background-color: #66bb6a;
+  color: #ffffff;
   border: 1px solid #1b5e20;
-  box-shadow: 0 0 12px rgba(67, 160, 71, 0.4);
-  width: 50vw;
 }
 
+/* Primary button hover fix */
 .primary-btn:hover {
-  background: linear-gradient(135deg, #2e7d32, #1b5e20);
-  box-shadow: 0 0 18px rgba(76, 175, 80, 0.6);
+  background: #ffffff !important; 
+  color: #1b5e20 !important;
+  border: 1px solid #1b5e20;
   transform: scale(1.02);
 }
 
-/* Muted gray secondary */
-.secondary-btn {
-  background: #2b2b2b;
-  color: #ddd;
-  border: 1px solid #444;
-  width: 50vw;
-}
-
-.secondary-btn:hover {
-  background-color: #3a3a3a;
-  color: #fff;
-  transform: scale(1.02);
-}
-
-/* Button icon */
+/* Icon animation */
 .primary-btn svg {
   stroke: currentColor;
   margin-left: 0.5rem;
@@ -165,4 +152,60 @@
 
 .primary-btn:hover svg {
   transform: translateX(4px);
+}
+
+/* Secondary button */
+.secondary-btn {
+  background: #2b2b2b;
+  color: #ddd;
+  border: 1px solid #444;
+}
+
+.secondary-btn:hover {
+  background: #3a3a3a;
+  color: #fff;
+  transform: scale(1.02);
+}
+
+
+
+
+/* InfoNotice.css */
+.info-notice {
+  background: transparent;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.top-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.shield-icon {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  color: gray;
+}
+
+.main-text {
+  line-height: 1.4;
+}
+
+.legal-text {
+  color: #fffcfc;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.link {
+  color: #2874f0;
+  text-decoration: none;
 }

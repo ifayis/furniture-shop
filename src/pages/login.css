@@ -1,7 +1,7 @@
 /* Login & Register Shared Background Wrapper */
 .login-bg-wrapper,
 .register-bg-wrapper {
-  background-image: url('/images/furniture-green-bg.jpg');
+  background-image: url('/images/loginbg.jpg');
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -23,7 +23,7 @@
 
 /* Login Container */
 .login-container {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(42, 66, 41, 0.05);
   padding: 2rem 2.5rem;
   border-radius: 1.25rem;
   backdrop-filter: blur(8px);
@@ -64,13 +64,20 @@
   gap: 0.4rem;
 }
 
+.form-group input{
+  background: transparent !important;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  width: 100%;
+}
+
 .input-with-icon {
   display: flex;
   align-items: center;
-  background-color: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 8px;
-  padding: 0.6rem 0.75rem;
+  background: transparent;
 }
 
 .input-icon {
@@ -78,21 +85,10 @@
   font-size: 1.1rem;
 }
 
-.form-input,
-.role-select {
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #000000;
-  font-size: 1rem;
-  width: 100%;
-  appearance: none;
-}
-
 /* Button */
 .login-button {
-  background: linear-gradient(90deg, #abbab7, #1d942b);
-  color: #fff;
+  background-color: #185b1cac;
+  color: #ffffff;
   font-size: 1rem;
   padding: 0.75rem;
   border: none;
@@ -104,7 +100,7 @@
 }
 
 .login-button:hover {
-  background: linear-gradient(90deg, #157a2e, #9db0a2);
+  background-color: #2bce33a3;
 }
 
 .login-footer {

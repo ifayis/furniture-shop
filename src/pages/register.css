@@ -23,10 +23,9 @@
 
 /* Register Container */
 .register-wrapper {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(42, 66, 41, 0.05);
   padding: 2rem 2.5rem;
   border-radius: 1.25rem;
-  backdrop-filter: blur(8px);
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
   width: 100%;
   max-width: 420px;
@@ -55,7 +54,6 @@
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
 }
 
 .form-group {
@@ -74,10 +72,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  background-color: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 8px;
-  padding: 0.6rem 0.75rem;
 }
 
 .input-icon {
@@ -102,8 +97,8 @@
 }
 
 .register-button {
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
-  color: #fff;
+  background-color: #185b1cac;
+  color: #f3f3f3;
   font-size: 1rem;
   padding: 0.75rem;
   border: none;
@@ -118,7 +113,7 @@
 }
 
 .register-button:hover {
-  background: linear-gradient(135deg, #ff9478, #ffc78e);
+  background-color: #2bce33a3;
 }
 
 /* Footer */

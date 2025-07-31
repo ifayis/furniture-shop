@@ -14,6 +14,7 @@ import AdminPage from './pages/adminpage'
 import AdminProducts from './pages/admin-products'
 import AdminUsers from './pages/admin-users'
 import EditProduct from './pages/admin-edit-product'
+import Paymentpage from './pages/paymentpage'
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
   return (
     <>
      {!hideNavbar && <Navbar />}
-        <ToastContainer position="top-center" autoClose={1000} />   
+        <ToastContainer position="bottom-center" autoClose={1000} />   
         <Routes>
         <Route path='/register' element={< Register />} />
         <Route path='/login' element={< Login />} />
@@ -32,6 +33,7 @@ function App() {
         <Route path='/cart' element={<Cart />} />
         <Route path='/checkout' element={<Checkout/>} />
         <Route path='/orders' element={<Orders/>} /> 
+        <Route path='/paymentpage' element={<Paymentpage/>}/>
      
         <Route element={<ProtectedRoute role='admin' />}>
         <Route path='/adminpage' element={<AdminPage />} />

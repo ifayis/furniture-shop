@@ -48,15 +48,7 @@ function Checkout() {
 
   return (
     <div className="checkout-container">
-  <div className="checkout-header">
-    <h1 className="checkout-title">Checkout Your Order</h1>
-    <div className="checkout-progress">
-      <span className="active">Cart</span>
-      <span className="active">Details</span>
-      <span>Payment</span>
-      <span>Complete</span>
-    </div>
-  </div>
+  
 
   {cart.length === 0 ? (
     <div className="empty-cart">
@@ -71,6 +63,14 @@ function Checkout() {
     </div>
   ) : (
     <div className="checkout-content">
+      <div className="checkout-header">
+    <h1 className="checkout-title">Checkout Your Order</h1>
+    <div className="checkout-progress">
+      <span className="active">Cart</span>
+      <span className="active">Details</span>
+      <span>Payment</span>
+    </div>
+  </div>
       <div className="order-summary">
         <h2 className="section-title">Order Summary</h2>
         <div className="order-items">
@@ -111,6 +111,23 @@ function Checkout() {
           </div>
         </div>
       </div>
+
+       <div className="info-notice">
+      <div className="top-message">
+        <span className="shield-icon">🛡️</span>
+        <span className="main-text">
+          Safe and secure payments. Easy returns. <br />
+          100% Authentic products.
+        </span>
+      </div>
+
+      <p className="legal-text">
+        By continuing with the order, you confirm that you are above 18 years of age, 
+        and you agree to the Flipkart’s{' '}
+        <a href="#" className="link">Terms of Use</a> and{' '}
+        <a href="#" className="link">Privacy Policy</a>
+      </p>
+    </div>
 
       <div className="checkout-actions">
         <button 

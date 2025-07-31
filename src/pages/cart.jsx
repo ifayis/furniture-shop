@@ -54,7 +54,8 @@ function Cart() {
   {cart.length === 0 ? (
     <div className="empty-cart">
       <p>Your cart is empty</p>
-      <button className="continue-shopping" onClick={() => navigate("/")}>
+      <br/>
+      <button className="checkout-btn" onClick={() => navigate("/")}>
         Continue Shopping
       </button>
     </div>
@@ -122,7 +123,7 @@ function Cart() {
           Proceed to Checkout
         </button>
         
-        <button className="continue-shopping" onClick={() => navigate("/")}>
+        <button className="checkout-btn" onClick={() => navigate("/")}>
           Continue Shopping
         </button>
       </div>
