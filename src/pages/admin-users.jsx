@@ -33,7 +33,7 @@ function AdminUsers() {
   };
 
   return (
-    <div className='user-management-container' style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+    <div className='user-management-container' style={{ padding: '2rem', margin: '0 auto' }}>
   <div className='admin-header'>
     <h2>Manage Users</h2>
     <button 

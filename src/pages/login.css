@@ -73,6 +73,15 @@
   width: 100%;
 }
 
+.role-select{
+  background: transparent !important;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  width: 100%;
+}
+
 .input-with-icon {
   display: flex;
   align-items: center;

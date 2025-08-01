@@ -41,7 +41,7 @@ function Login() {
         <p>Login to explore our furniture collection</p>
       </div>
 
-      {/* <div className="form-group">
+      <div className="form-group">
         <div className="input-with-icon">
           <span className="input-icon">👤</span>
           <select 
@@ -53,7 +53,7 @@ function Login() {
             <option value="admin">admin</option>
           </select>
         </div>
-      </div> */}
+      </div>
 
       <div className="form-group">
         <div className="input-with-icon">
