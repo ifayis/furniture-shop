@@ -32,7 +32,7 @@ function PaymentPage() {
   const handlePlaceOrder = () => {
     if (!user || cart.length === 0) {
       toast.warning('No items in cart');
-      navigate('/products');
+      navigate('/');
       return;
     }
 
@@ -55,7 +55,6 @@ function PaymentPage() {
 
   return (
     <div className="payment-container">
-      <h2>Checkout</h2>
       <div className="checkout-grid">
         {/* Address Section */}
         <div className="address-section">
@@ -79,7 +78,7 @@ function PaymentPage() {
             </label>
             <label>
               <input type="radio" name="payment" />
-              UPI / Google Pay
+              UPI / Gpay
             </label>
             <label>
               <input type="radio" name="payment" />
@@ -92,9 +91,9 @@ function PaymentPage() {
         <div className="summary-section">
           <h3>Order Summary</h3>
           <div className="summary-box">
-            <p>Subtotal: ₹{subtotal.toLocaleString()}</p>
-            <p>Shipping: ₹{shipping}</p>
-            <p><strong>Total: ₹{total.toLocaleString()}</strong></p>
+            <p>Subtotal: ${subtotal.toLocaleString()}</p>
+            <p>Shipping: ${shipping}</p>
+            <p><strong>Total: ${total.toLocaleString()}</strong></p>
           </div>
           <button className="pay-button" onClick={handlePlaceOrder}>
             Place Order

@@ -22,9 +22,9 @@ function Checkout() {
   }, [])
 
   const handlePayment = () => {
-    const cartKey = `cart-${user.email}`
-    const orderKey = `orders-${user.email}`
-    const previousOrders = JSON.parse(localStorage.getItem(orderKey)) || []
+  //   const cartKey = `cart-${user.email}`
+  //   const orderKey = `orders-${user.email}`
+  //   const previousOrders = JSON.parse(localStorage.getItem(orderKey)) || []
 
     if (cart.length === 0) {
       toast.warning('no items available')
@@ -32,18 +32,17 @@ function Checkout() {
       return
     }
 
-    const newOrder = {
-      id: Date.now(),
-      items: cart,
-      total: cart.reduce((sum, item) => sum + item.price * item.qty, 0),
-      date: new Date().toLocaleString()
-    }
+    // const newOrder = {
+    //   id: Date.now(),
+    //   items: cart,
+    //   total: cart.reduce((sum, item) => sum + item.price * item.qty, 0),
+    //   date: new Date().toLocaleString()
+    // }
 
-    const updatedOrders = [...previousOrders, newOrder];
-    localStorage.setItem(orderKey, JSON.stringify(updatedOrders))
-    localStorage.removeItem(cartKey)
-    toast.success("Payment successful, order placed")
-    navigate('/orders')
+    // const updatedOrders = [...previousOrders, newOrder];
+    // localStorage.setItem(orderKey, JSON.stringify(updatedOrders))
+    // localStorage.removeItem(cartKey)
+    navigate('/paymentpage')
   }
 
   return (
