@@ -28,6 +28,8 @@ function Products() {
       return 0
     })
 
+    if(!products) return <p>loading...</p>
+
   return (
     <div className="product-listing-container">
       {/* Hero Banner */}
@@ -69,6 +71,7 @@ function Products() {
       </div>
 
       {/* Posters */}
+      <h4>Recommended interior designs for you</h4><br/>
       <div className="poster-row">
         <img src="/images/banner-sofa.jpg" alt="sofa" />
         <img src="/images/banner-table.webp" alt="table" />

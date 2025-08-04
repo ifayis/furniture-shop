@@ -48,7 +48,7 @@ function Navbar() {
                 }} 
                 className="logout-btn"
               >
-                Logout
+               Logout
               </button>
             </div>
           ) : (
