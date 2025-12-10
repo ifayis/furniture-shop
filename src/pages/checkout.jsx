@@ -1,154 +1,143 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import '../css/checkout.css'
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "../css/checkout.css";
 
 function Checkout() {
-  const [cart, setCart] = useState([])
-  const [user, setUser] = useState(null)
-  const navigate = useNavigate()
+  const [cart, setCart] = useState([]);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-      const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
-      toast.info('login to countinue.')
-      navigate('/login')
-      return
+      toast.info("Login to continue.");
+      navigate("/login");
+      return;
     }
-    setUser(user)
-    const cartKey = `cart-${user.email}`
-    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || []
-    setCart(storedCart)
-  }, [])
+    setUser(user);
+    const cartKey = `cart-${user.email}`;
+    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    setCart(storedCart);
+  }, [navigate]);
 
   const handlePayment = () => {
-  //   const cartKey = `cart-${user.email}`
-  //   const orderKey = `orders-${user.email}`
-  //   const previousOrders = JSON.parse(localStorage.getItem(orderKey)) || []
-
     if (cart.length === 0) {
-      toast.warning('no items available')
-      navigate("/products")
-      return
+      toast.warning("No items available");
+      navigate("/products");
+      return;
     }
+    navigate("/paymentpage");
+  };
 
-    // const newOrder = {
-    //   id: Date.now(),
-    //   items: cart,
-    //   total: cart.reduce((sum, item) => sum + item.price * item.qty, 0),
-    //   date: new Date().toLocaleString()
-    // }
-
-    // const updatedOrders = [...previousOrders, newOrder];
-    // localStorage.setItem(orderKey, JSON.stringify(updatedOrders))
-    // localStorage.removeItem(cartKey)
-    navigate('/paymentpage')
-  }
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.qty,
+    0
+  );
 
   return (
     <div className="checkout-container">
-  
 
-  {cart.length === 0 ? (
-    <div className="empty-cart">
-      <img src="/images/empty-cart.svg" alt="Empty cart" className="empty-cart-img" />
-      <h3>Your cart is empty</h3>
-      <button 
-        className="primary-btn"
-        onClick={() => navigate('/')}
-      >
-        Continue Shopping
-      </button>
-    </div>
-  ) : (
-    <div className="checkout-content">
-      <div className="checkout-header">
-    <h1 className="checkout-title">Checkout Your Order</h1>
-    <div className="checkout-progress">
-      <span className="active">Cart</span>
-      <span className="active">Details</span>
-      <span>Payment</span>
-    </div>
-  </div>
-      <div className="order-summary">
-        <h2 className="section-title">Order Summary</h2>
-        <div className="order-items">
-          {cart.map((item) => (
-            <div className="order-item" key={item.id}>
-              <div className="item-image-container">
-                <img 
-                  src={`/images/${item.image}`} 
-                  alt={item.name} 
-                  className="item-image"
-                  loading="lazy"
-                />
-              </div>
-              <div className="item-details">
-                <h3 className="item-name">{item.name}</h3>
-                <div className="item-meta">
-                  <span className="item-price">${item.price.toLocaleString()}</span>
-                  <span className="item-quantity">Qty: {item.qty}</span>
-                </div>
-                <p className="item-total">${(item.price * item.qty).toLocaleString()}</p>
-              </div>
+      {/* If empty */}
+      {cart.length === 0 ? (
+        <div className="empty-cart-box">
+          <img
+            src="/images/empty-cart.svg"
+            alt="Empty cart"
+            className="empty-img"
+          />
+          <h2>Your cart is empty</h2>
+          <button className="primary-btn" onClick={() => navigate("/")}>
+            Continue Shopping
+          </button>
+        </div>
+      ) : (
+        <div className="checkout-layout">
+
+          {/* LEFT SIDE – Items + Progress */}
+          <div className="checkout-left">
+
+            <div className="checkout-progress">
+              <span className="step done">Cart ✓</span>
+              <span className="step active">Details</span>
+              <span className="step">Payment</span>
             </div>
-          ))}
+
+            <h2 className="checkout-title">Review Your Order</h2>
+
+            <div className="checkout-items">
+              {cart.map((item) => (
+                <div className="checkout-item" key={item.id}>
+                  <div className="ci-left">
+                    <img
+                      src={`/images/${item.image}`}
+                      alt={item.name}
+                      className="ci-img"
+                    />
+                    <div>
+                      <h3 className="ci-name">{item.name}</h3>
+                      <p className="ci-meta">Qty: {item.qty}</p>
+                    </div>
+                  </div>
+                  <div className="ci-right">
+                    <p className="ci-price">
+                      ${(item.price * item.qty).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Notice */}
+            <div className="secure-note">
+              <div className="secure-icon">🛡️</div>
+              <p>Safe & Secure Payments. Fast Delivery. Authentic Products.</p>
+            </div>
+
+          </div>
+
+          {/* RIGHT SIDE – Order Summary */}
+          <aside className="checkout-summary">
+            <h3 className="summary-title">Order Summary</h3>
+
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>${subtotal.toLocaleString()}</span>
+            </div>
+
+            <div className="summary-row">
+              <span>Shipping</span>
+              <span className="free">FREE</span>
+            </div>
+
+            <div className="summary-divider" />
+
+            <div className="summary-row total">
+              <span>Total</span>
+              <span>${subtotal.toLocaleString()}</span>
+            </div>
+
+            <div className="summary-actions">
+              <button
+                className="secondary-btn"
+                onClick={() => navigate("/cart")}
+              >
+                ← Back to Cart
+              </button>
+
+              <button
+                className="primary-btn"
+                onClick={handlePayment}
+              >
+                Proceed to Payment →
+              </button>
+            </div>
+          </aside>
+
         </div>
-
-        <div className="order-totals">
-          <div className="total-row">
-            <span>Subtotal</span>
-            <span>${cart.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString()}</span>
-          </div>
-          <div className="total-row">
-            <span>Shipping</span>
-            <span>$29</span>
-          </div>
-          <div className="total-row grand-total">
-            <span>Total Amount</span>
-            <span>${cart.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString()}</span>
-          </div>
-        </div>
-      </div>
-
-       <div className="info-notice">
-      <div className="top-message">
-        <span className="shield-icon">🛡️</span>
-        <span className="main-text">
-          Safe and secure payments. Easy returns. <br />
-          100% Authentic products.
-        </span>
-      </div>
-
-      <p className="legal-text">
-        By continuing with the order, you confirm that you are above 18 years of age, 
-        and you agree to the Flipkart’s{' '}
-        <a href="#" className="link">Terms of Use</a> and{' '}
-        <a href="#" className="link">Privacy Policy</a>
-      </p>
+      )}
     </div>
-
-      <div className="checkout-actions">
-        <button 
-          className="secondary-btn"
-          onClick={() => navigate('/cart')}
-        >
-          ← Back to Cart
-        </button>
-        <button 
-          className="primary-btn payment-btn"
-          onClick={handlePayment}
-        >
-          Proceed to Payment
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  )}
-</div>
-  )
+  );
 }
 
-export default Checkout
+export default Checkout;
