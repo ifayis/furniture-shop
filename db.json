@@ -17,15 +17,6 @@
   ],
   "products": [
     {
-      "id": "a0b1",
-      "name": "normal chair",
-      "category": "chair",
-      "price": 799,
-      "image": "normal-chair.jpg",
-      "description": "good looking comfortable chair. worth",
-      "isActive": false
-    },
-    {
       "id": "7b73",
       "name": "normal almirah",
       "category": "almirah",
@@ -60,24 +51,6 @@
       "image": "normal-shelves.jpeg",
       "description": "A practical and space-saving wall-mounted shelf unit made from engineered wood. Ideal for displaying books, décor, or daily essentials. Its clean and minimal design fits seamlessly into living rooms, bedrooms, or offices, helping keep your space tidy and organized.",
       "isActive": true
-    },
-    {
-      "id": "2d72",
-      "name": "chair",
-      "category": "chair",
-      "price": 799,
-      "image": "normal-chair.jpg",
-      "description": "comfortable chair. worth it",
-      "isActive": false
-    },
-    {
-      "id": "cf15",
-      "name": "chair",
-      "category": "chair",
-      "price": 999,
-      "image": "normal-chair.jpg",
-      "description": "good, comfort",
-      "isActive": false
     },
     {
       "id": "dca5",
