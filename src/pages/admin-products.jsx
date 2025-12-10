@@ -22,7 +22,8 @@ function AdminProducts() {
   const fetchProducts = () => {
     fetch("https://furniture-shop-asjh.onrender.com/products")
       .then((res) => res.json())
-      .then((data) => setProducts(data.filter((p) => p.isActive !== false)))
+      // IMPORTANT: admin sees ALL products (even hidden)
+      .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
   };
 
@@ -62,21 +63,35 @@ function AdminProducts() {
     setEditingId(null);
   };
 
-  const handleDelete = async (id) => {
+  const handleToggleVisibility = async (id) => {
     const product = products.find((p) => p.id === id);
     if (!product) return;
+
+    const newStatus = product.isActive === false ? true : false;
 
     await fetch(
       `https://furniture-shop-asjh.onrender.com/products/${id}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isActive: false }),
+        body: JSON.stringify({ isActive: newStatus }),
       }
     );
-
     fetchProducts();
   };
+
+  const handlePermanentDelete = async (id) => {
+  if (!window.confirm("Are you sure you want to permanently delete this product?")) {
+    return;
+  }
+
+  await fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`, {
+    method: "DELETE",
+  });
+
+  fetchProducts();
+};
+
 
   const handleUpdate = (id) => {
     setEditingId(id);
@@ -87,6 +102,8 @@ function AdminProducts() {
     (p) => categoryFilter === "All" || p.category === categoryFilter
   );
 
+  const activeCount = products.filter((p) => p.isActive !== false).length;
+
   return (
     <div className="admin-products-container">
       <div className="admin-products-content">
@@ -95,11 +112,11 @@ function AdminProducts() {
           <div>
             <h2 className="admin-title">Product Management</h2>
             <p className="admin-subtitle">
-              Add, edit and soft-delete products from your LuxeLiving catalog.
+              Add, edit, hide or unhide products in your LuxeLiving catalog.
             </p>
           </div>
           <div className="admin-badge">
-            Active Products: <span>{products.length}</span>
+            Active: <span>{activeCount}</span> / {products.length}
           </div>
         </div>
 
@@ -213,47 +230,71 @@ function AdminProducts() {
 
         {/* Product Grid */}
         <div className="products-grid">
-          {filtered.map((p) => (
-            <div key={p.id} className="product-card">
-              <div className="product-image-container">
-                <img
-                  src={`/images/${p.image}`}
-                  alt={p.name}
-                  className="product-image"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "/images/product-placeholder.png";
-                  }}
-                />
-              </div>
-              <div className="product-info">
-                <div className="product-header-row">
-                  <h3>{p.name}</h3>
-                  <span className="product-price">
-                    ${p.price.toLocaleString()}
-                  </span>
+          {filtered.map((p) => {
+            const isHidden = p.isActive === false;
+            return (
+              <div key={p.id} className="product-card">
+                <div className="product-image-container">
+                  <img
+                    src={`/images/${p.image}`}
+                    alt={p.name}
+                    className="product-image"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/images/product-placeholder.png";
+                    }}
+                  />
                 </div>
-                <span className="product-category">{p.category}</span>
-                <p className="product-description">
-                  {p.description || "No description provided."}
-                </p>
+                <div className="product-info">
+                  <div className="product-header-row">
+                    <h3>{p.name}</h3>
+                    <span className="product-price">
+                      ${p.price.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="product-meta-row">
+                    <span className="product-category">{p.category}</span>
+                    <span
+                      className={`status-pill ${isHidden ? "status-hidden" : "status-active"
+                        }`}
+                    >
+                      {isHidden ? "Hidden" : "Visible"}
+                    </span>
+                  </div>
+
+                  <p className="product-description">
+                    {p.description || "No description provided."}
+                  </p>
+                </div>
+
+                <div className="product-actions">
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleUpdate(p.id)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className={`toggle-btn ${isHidden ? "toggle-unhide" : "toggle-hide"}`}
+                    onClick={() => handleToggleVisibility(p.id)}
+                  >
+                    {isHidden ? "Unhide" : "Hide"}
+                  </button>
+
+                  {/* DELETE BUTTON */}
+                  <button
+                    className="delete-icon-btn"
+                    onClick={() => handlePermanentDelete(p.id)}
+                  >
+                    🗑️
+                  </button>
+                </div>
+
               </div>
-              <div className="product-actions">
-                <button
-                  className="edit-btn"
-                  onClick={() => handleUpdate(p.id)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(p.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
 
           {filtered.length === 0 && (
             <p className="no-products-text">No products found.</p>
