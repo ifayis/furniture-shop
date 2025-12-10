@@ -8,7 +8,6 @@ function Cart() {
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
-  // Load cart on mount
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
@@ -21,7 +20,6 @@ function Cart() {
     setCart(userCart);
   }, [navigate]);
 
-  // Recalculate total when cart changes
   useEffect(() => {
     const ttl = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
     setTotal(ttl);
@@ -58,7 +56,7 @@ function Cart() {
   };
 
   const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-  const shipping = total > 0 ? 0 : 0; // still FREE, kept for future use
+  const shipping = total > 0 ? 19 : 0;
 
   return (
     <div className="cart-container">
@@ -162,7 +160,6 @@ function Cart() {
             })}
           </div>
 
-          {/* Right: order summary */}
           <aside className="cart-summary">
             <h3 className="summary-title">Order Summary</h3>
 
@@ -172,7 +169,7 @@ function Cart() {
             </div>
             <div className="summary-row">
               <span>Shipping</span>
-              <span className="shipping-free">FREE</span>
+              <span className="shipping-free">$19</span>
             </div>
 
             <div className="summary-divider" />

@@ -16,7 +16,7 @@ function PaymentPage() {
   });
 
   const [coupon, setCoupon] = useState("");
-  const [discount, setDiscount] = useState(0); 
+  const [discount, setDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
 
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ function PaymentPage() {
     }
   }, [navigate]);
 
-  // Save address whenever user or address changes
   useEffect(() => {
     if (!user) return;
     const addressKey = `address-${user.email}`;
@@ -126,35 +125,57 @@ function PaymentPage() {
     setAddress((prev) => ({ ...prev, [name]: value }));
   };
 
+  if (cart.length === 0) {
+    return (
+      <div className="payment-container">
+        <div className="empty-payment-box">
+          <h2>No items to pay for</h2>
+          <button className="primary-btn" onClick={() => navigate("/")}>
+            Go to Products
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="payment-container">
-      <div className="checkout-grid">
-        <div>
-          <div className="address-section">
-            <h3>Shipping Address</h3>
-            <input
-              type="text"
-              placeholder="Full Name"
-              name="fullName"
-              value={address.fullName}
-              onChange={handleAddressChange}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              name="phone"
-              value={address.phone}
-              onChange={handleAddressChange}
-              required
-            />
+      <div className="payment-layout">
+        {/* LEFT SIDE – Address + Payment + Coupon */}
+        <div className="payment-left">
+          <div className="payment-progress">
+            <span className="step done">Cart ✓</span>
+            <span className="step done">Details ✓</span>
+            <span className="step active">Payment</span>
+          </div>
+
+          <h2 className="payment-title">Payment & Shipping Details</h2>
+
+          <div className="payment-card">
+            <h3 className="card-title">Shipping Address</h3>
+            <div className="address-grid">
+              <input
+                type="text"
+                placeholder="Full Name"
+                name="fullName"
+                value={address.fullName}
+                onChange={handleAddressChange}
+              />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                name="phone"
+                value={address.phone}
+                onChange={handleAddressChange}
+              />
+            </div>
+
             <input
               type="text"
               placeholder="Address Line 1"
               name="line1"
               value={address.line1}
               onChange={handleAddressChange}
-              required
             />
             <input
               type="text"
@@ -163,14 +184,14 @@ function PaymentPage() {
               value={address.line2}
               onChange={handleAddressChange}
             />
-            <div className="input-row">
+
+            <div className="address-grid">
               <input
                 type="text"
                 placeholder="City"
                 name="city"
                 value={address.city}
                 onChange={handleAddressChange}
-                required
               />
               <input
                 type="text"
@@ -178,14 +199,13 @@ function PaymentPage() {
                 name="pin"
                 value={address.pin}
                 onChange={handleAddressChange}
-                required
               />
             </div>
           </div>
 
           {/* Payment Method + Coupon */}
-          <div className="address-section" style={{ marginTop: "1.5rem" }}>
-            <h3>Payment Method</h3>
+          <div className="payment-card">
+            <h3 className="card-title">Payment Method</h3>
             <div className="payment-options">
               <label>
                 <input type="radio" name="payment" defaultChecked />
@@ -193,7 +213,7 @@ function PaymentPage() {
               </label>
               <label>
                 <input type="radio" name="payment" />
-                UPI / Gpay
+                UPI / GPay
               </label>
               <label>
                 <input type="radio" name="payment" />
@@ -209,7 +229,7 @@ function PaymentPage() {
                   id="coupon"
                   type="text"
                   maxLength={7}
-                  placeholder="Enter the code"
+                  placeholder="ENTER CODE"
                   value={coupon}
                   onChange={(e) => setCoupon(e.target.value.toUpperCase())}
                   className="coupon-input"
@@ -228,34 +248,50 @@ function PaymentPage() {
                 Code must be 7 letters/numbers. One use per order.
               </p>
             </div>
+
+            {/* Secure note */}
+            <div className="secure-note">
+              <div className="secure-icon">🛡️</div>
+              <p>256-bit secure payments. We never store your card details.</p>
+            </div>
           </div>
         </div>
 
-        {/* Right side: Summary */}
-        <div className="summary-section">
-          <h3>Order Summary</h3>
-          <div className="summary-box">
-            <p>
-              <span>Subtotal:</span>
-              <span>${subtotal.toLocaleString()}</span>
-            </p>
-            <p>
-              <span>Shipping:</span>
-              <span>${shipping}</span>
-            </p>
-            <p>
-              <span>Discount:</span>
-              <span>{discountDisplay}</span>
-            </p>
-            <p>
-              <strong>Total:</strong>
-              <strong>${finalTotal.toLocaleString()}</strong>
-            </p>
+        {/* RIGHT SIDE – Summary */}
+        <aside className="payment-summary">
+          <h3 className="summary-title">Order Summary</h3>
+          <div className="summary-row">
+            <span>Subtotal</span>
+            <span>${subtotal.toLocaleString()}</span>
           </div>
-          <button className="pay-button" onClick={handlePlaceOrder}>
-            Place Order
-          </button>
-        </div>
+          <div className="summary-row">
+            <span>Shipping</span>
+            <span>${shipping}</span>
+          </div>
+          <div className="summary-row">
+            <span>Discount</span>
+            <span>{discountDisplay}</span>
+          </div>
+
+          <div className="summary-divider" />
+
+          <div className="summary-row total">
+            <span>Total</span>
+            <span>${finalTotal.toLocaleString()}</span>
+          </div>
+
+          <div className="summary-actions">
+            <button
+              className="secondary-btn"
+              onClick={() => navigate("/checkout")}
+            >
+              ← Back to Checkout
+            </button>
+            <button className="primary-btn" onClick={handlePlaceOrder}>
+              Place Order & Pay
+            </button>
+          </div>
+        </aside>
       </div>
     </div>
   );

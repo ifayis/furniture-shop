@@ -35,10 +35,11 @@ function Checkout() {
     0
   );
 
+  const shipping = cart.length > 0 ? 19 : 0;
+  const total = subtotal + shipping;
+
   return (
     <div className="checkout-container">
-
-      {/* If empty */}
       {cart.length === 0 ? (
         <div className="empty-cart-box">
           <img
@@ -53,10 +54,8 @@ function Checkout() {
         </div>
       ) : (
         <div className="checkout-layout">
-
           {/* LEFT SIDE – Items + Progress */}
           <div className="checkout-left">
-
             <div className="checkout-progress">
               <span className="step done">Cart ✓</span>
               <span className="step active">Details</span>
@@ -88,12 +87,10 @@ function Checkout() {
               ))}
             </div>
 
-            {/* Notice */}
             <div className="secure-note">
               <div className="secure-icon">🛡️</div>
               <p>Safe & Secure Payments. Fast Delivery. Authentic Products.</p>
             </div>
-
           </div>
 
           {/* RIGHT SIDE – Order Summary */}
@@ -107,14 +104,14 @@ function Checkout() {
 
             <div className="summary-row">
               <span>Shipping</span>
-              <span className="free">FREE</span>
+              <span className="free">${shipping.toLocaleString()}</span>
             </div>
 
             <div className="summary-divider" />
 
             <div className="summary-row total">
               <span>Total</span>
-              <span>${subtotal.toLocaleString()}</span>
+              <span>${total.toLocaleString()}</span>
             </div>
 
             <div className="summary-actions">
@@ -133,7 +130,6 @@ function Checkout() {
               </button>
             </div>
           </aside>
-
         </div>
       )}
     </div>

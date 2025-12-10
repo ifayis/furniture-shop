@@ -1,33 +1,30 @@
-import { useParams, useNavigate } from "react-router-dom"
-import React, { useState, useEffect } from "react"
-import { toast } from "react-toastify"
-import "../css/productdetails.css"
+import { useParams, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import "../css/productdetails.css";
 
 function Productdetails() {
-  const { id } = useParams()
-  const [product, setProduct] = useState(null)
-  const [qty, setQty] = useState(1)
-  const [relatedProducts, setRelatedProducts] = useState([])
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [qty, setQty] = useState(1);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // reviews
-  const [reviews, setReviews] = useState([])
-  const [rating, setRating] = useState(0)
-  const [comment, setComment] = useState("")
-  const [editingId, setEditingId] = useState(null)
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [editingId, setEditingId] = useState(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  // Fetch single product
   useEffect(() => {
     fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data))
-      .catch((err) => console.log("error fetching product: ", err))
-  }, [id])
+      .catch((err) => console.log("error fetching product: ", err));
+  }, [id]);
 
-  // Fetch related products when product is loaded
   useEffect(() => {
-    if (!product) return
+    if (!product) return;
 
     fetch("https://furniture-shop-asjh.onrender.com/products")
       .then((res) => res.json())
@@ -37,92 +34,91 @@ function Productdetails() {
             p.isActive !== false &&
             p.id !== product.id &&
             p.category === product.category
-        )
-        setRelatedProducts(active.slice(0, 4)) // show max 4
+        );
+        setRelatedProducts(active.slice(0, 4));
       })
-      .catch((err) => console.log("error fetching related products: ", err))
-  }, [product])
+      .catch((err) => console.log("error fetching related products: ", err));
+  }, [product]);
 
-  // Load reviews for this product from localStorage
   useEffect(() => {
-    if (!id) return
-    const key = `reviews-${id}`
-    const stored = JSON.parse(localStorage.getItem(key)) || []
-    setReviews(stored)
-  }, [id])
+    if (!id) return;
+    const key = `reviews-${id}`;
+    const stored = JSON.parse(localStorage.getItem(key)) || [];
+    setReviews(stored);
+  }, [id]);
 
   const saveReviews = (updated) => {
-    const key = `reviews-${id}`
-    setReviews(updated)
-    localStorage.setItem(key, JSON.stringify(updated))
-  }
+    const key = `reviews-${id}`;
+    setReviews(updated);
+    localStorage.setItem(key, JSON.stringify(updated));
+  };
 
   const addCart = () => {
-    const user = JSON.parse(localStorage.getItem("user"))
+    const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
-      toast.warning("login to countinue.")
-      navigate("/login")
-      return
+      toast.warning("login to countinue.");
+      navigate("/login");
+      return;
     } else {
-      toast.info("item added to cart")
+      toast.info("item added to cart");
     }
 
-    const key = `cart-${user.email}`
-    const cart = JSON.parse(localStorage.getItem(key)) || []
-    const existing = cart.find((item) => item.id === product.id)
+    const key = `cart-${user.email}`;
+    const cart = JSON.parse(localStorage.getItem(key)) || [];
+    const existing = cart.find((item) => item.id === product.id);
 
     if (existing) {
-      existing.qty += qty
+      existing.qty += qty;
     } else {
-      cart.push({ ...product, qty })
+      cart.push({ ...product, qty });
     }
 
-    localStorage.setItem(key, JSON.stringify(cart))
-  }
+    localStorage.setItem(key, JSON.stringify(cart));
+  };
 
   const handleSubmitReview = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!rating || !comment.trim()) {
-      toast.warning("Please add rating and comment")
-      return
+      toast.warning("Please add rating and comment");
+      return;
     }
 
-    let updated
+    let updated;
     if (editingId) {
       updated = reviews.map((r) =>
         r.id === editingId ? { ...r, rating, comment } : r
-      )
-      toast.success("Review updated")
+      );
+      toast.success("Review updated");
     } else {
       const newReview = {
         id: Date.now(),
         rating,
         comment,
         createdAt: new Date().toISOString(),
-      }
-      updated = [...reviews, newReview]
-      toast.success("Review added")
+      };
+      updated = [...reviews, newReview];
+      toast.success("Review added");
     }
 
-    saveReviews(updated)
-    setRating(0)
-    setComment("")
-    setEditingId(null)
-  }
+    saveReviews(updated);
+    setRating(0);
+    setComment("");
+    setEditingId(null);
+  };
 
   const handleEditReview = (review) => {
-    setEditingId(review.id)
-    setRating(review.rating)
-    setComment(review.comment)
-  }
+    setEditingId(review.id);
+    setRating(review.rating);
+    setComment(review.comment);
+  };
 
   const handleDeleteReview = (reviewId) => {
-    const updated = reviews.filter((r) => r.id !== reviewId)
-    saveReviews(updated)
-    toast.info("Review deleted")
-  }
+    const updated = reviews.filter((r) => r.id !== reviewId);
+    saveReviews(updated);
+    toast.info("Review deleted");
+  };
 
-  if (!product) return <h2>loading...</h2>
+  if (!product) return <h2 className="loading-text">Loading product...</h2>;
 
   return (
     <div className="product-detail-page">
@@ -142,11 +138,17 @@ function Productdetails() {
           <div className="product-info-container">
             <h1 className="product-title">{product.name}</h1>
 
+            <div className="badge-row">
+              <span className="badge-pill">Premium Collection</span>
+              <span className="badge-pill badge-soft">
+                Category: {product.category}
+              </span>
+            </div>
+
             <div className="price-category">
               <span className="product-price">
                 ${product.price.toFixed(2)}
               </span>
-              <span className="product-category">{product.category}</span>
             </div>
 
             <div className="product-description">
@@ -156,7 +158,7 @@ function Productdetails() {
               </p>
             </div>
 
-            <div className="quantity-selector">
+            <div className="quantity-row">
               <label htmlFor="quantity">Quantity</label>
               <input
                 id="quantity"
@@ -170,72 +172,30 @@ function Productdetails() {
             </div>
 
             <div className="action-buttons">
-              <button className="add-to-cart-btn" onClick={addCart}>
-                <span>Add to Cart</span>
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                  <path
-                    d="M6 2L3 6V20C3 21 4 22 5 22H19C20 22 21 21 21 20V6L18 2H6Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M3 6H21"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M16 10C16 11 15 12 14 13C13 14 12 14 11 14C10 14 9 14 8 13C7 12 7 11 7 10"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
+              <button className="primary-btn" onClick={addCart}>
+                Add to Cart
               </button>
 
               <button
-                className="view-cart-btn"
+                className="secondary-btn"
                 onClick={() => navigate("/cart")}
               >
                 View Cart
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                  <path
-                    d="M9 20C9 21 10 22 11 22C12 22 13 21 13 20M9 20C9 19 10 18 11 18C12 18 13 19 13 20M9 20H3V4H6M13 20H21V4H14"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M6 4L6 1M14 4L14 1"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
               </button>
             </div>
 
             <div className="product-meta">
               <div className="meta-item">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path
-                    d="M12 22C17 22 22 17 22 12C22 6 17 2 12 2C6 2 2 6 2 12C2 17 6 22 12 22Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M12 8V12L15 15"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
-                <span>Fast Delivery</span>
+                <span className="meta-icon">🚚</span>
+                <span>Fast & secure delivery</span>
               </div>
               <div className="meta-item">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path
-                    d="M22 12H18L15 21L9 3L6 12H2"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
-                <span>Quality Guarantee</span>
+                <span className="meta-icon">🛠️</span>
+                <span>Premium build quality</span>
+              </div>
+              <div className="meta-item">
+                <span className="meta-icon">✅</span>
+                <span>Warranty & support included</span>
               </div>
             </div>
           </div>
@@ -354,7 +314,7 @@ function Productdetails() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default Productdetails
+export default Productdetails;
