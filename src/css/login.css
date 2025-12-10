@@ -1,6 +1,5 @@
 .login-bg-wrapper,
 .register-bg-wrapper {
-  background-image: url('/images/loginbg.jpg');
   background-size: cover;
   background-position: center;
   min-height: 100vh;
