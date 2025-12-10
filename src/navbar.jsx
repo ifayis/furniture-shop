@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import './navbar.css'
+import './css/navbar.css'
 
 function Navbar() {
   const [user, setUser] = useState(null)

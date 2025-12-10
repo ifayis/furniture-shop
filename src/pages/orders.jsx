@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import { toast } from 'react-toastify'
-import './orders.css'
+import '../css/orders.css'
 
 function Orders() {
     const [orders, setOrders] = useState([])

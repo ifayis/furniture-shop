@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './paymentpage.css';
+import '../css/paymentpage.css';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

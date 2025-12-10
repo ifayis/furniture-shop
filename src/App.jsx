@@ -1,4 +1,4 @@
-import './App.css'
+import './css/App.css'
 import { ToastContainer } from 'react-toastify'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Register from './pages/register'

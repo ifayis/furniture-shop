@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import './register.css'
+import '../css/register.css'
 
 function Register() {
   const [form, setForm] = useState({ username: '', email: '', password: '', role: 'user' })
