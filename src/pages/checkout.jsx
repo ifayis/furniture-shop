@@ -102,7 +102,7 @@ function Checkout() {
           </div>
           <div className="total-row">
             <span>Shipping</span>
-            <span>FREE</span>
+            <span>$29</span>
           </div>
           <div className="total-row grand-total">
             <span>Total Amount</span>

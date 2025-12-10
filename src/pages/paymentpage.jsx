@@ -50,7 +50,7 @@ function PaymentPage() {
 
   // Totals
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const shipping = subtotal > 0 ? 49 : 0;
+  const shipping = subtotal > 0 ? 29 : 0;
   const totalBeforeDiscount = subtotal + shipping;
   const finalTotal = Math.max(totalBeforeDiscount - discount, 0);
 
