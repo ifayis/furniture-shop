@@ -15,6 +15,7 @@ import AdminProducts from './pages/admin-products'
 import AdminUsers from './pages/admin-users'
 import EditProduct from './pages/admin-edit-product'
 import Paymentpage from './pages/paymentpage'
+import TrackOrder from './pages/trackorders'
 
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
         <Route path='/checkout' element={<Checkout/>} />
         <Route path='/orders' element={<Orders/>} /> 
         <Route path='/paymentpage' element={<Paymentpage/>}/>
+        <Route path='/trackorders' element={<TrackOrder/>}/>
+
      
         <Route element={<ProtectedRoute role='admin' />}>
         <Route path='/adminpage' element={<AdminPage />} />

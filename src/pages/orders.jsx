@@ -177,7 +177,7 @@ function Orders() {
                         className="primary-btn"
                         onClick={() => {
                           toast.success(`Tracking order #${order.id}`);
-                          navigate(`/track-order/${order.id}`);
+                          navigate('/trackorders');
                         }}
                       >
                         Track
