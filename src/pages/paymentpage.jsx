@@ -244,9 +244,6 @@ function PaymentPage() {
                   {couponApplied ? "Applied" : "Apply Code"}
                 </button>
               </div>
-              <p className="coupon-hint">
-                Code must be 7 letters/numbers. One use per order.
-              </p>
             </div>
 
             {/* Secure note */}
