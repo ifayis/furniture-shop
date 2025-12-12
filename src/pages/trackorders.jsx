@@ -10,7 +10,6 @@ function TrackOrder() {
   const [timeline, setTimeline] = useState([]);
   const [user, setUser] = useState(null);
 
-  // Stepper states in order
   const STATUS_STEPS = [
     "pending",
     "processing",
@@ -19,7 +18,6 @@ function TrackOrder() {
     "delivered",
   ];
 
-  // Helper: load order from localStorage orders-<email>
   const loadOrder = (orderId) => {
     try {
       const userJson = localStorage.getItem("user");
@@ -60,32 +58,23 @@ function TrackOrder() {
     };
   };
 
-  // generate a plausible timeline from order.date and status
   const buildTimeline = (ord) => {
     const base = ord?.date ? new Date(ord.date) : new Date();
-    // Normalize step index from status
     const currentIndex = Math.max(
       0,
       STATUS_STEPS.indexOf((ord.status || "pending").toLowerCase())
     );
 
-    // Build times: distribute times before and after base time
-    // For earlier steps, subtract sensible hours; for later steps, add hours
     const entries = STATUS_STEPS.map((step, idx) => {
-      // compute delta hours relative to current step
       const diff = idx - currentIndex;
-      // Use a base offset: earlier steps are up to -48h, future up to +48h
-      const hours = diff * 12; // 12 hours per step distance
+      const hours = diff * 12;
       const ts = new Date(base.getTime() + hours * 60 * 60 * 1000);
-      // if order has a `timeline` with timestamps, prefer them
       return {
         step,
         time: ts,
         done: idx <= currentIndex,
       };
     });
-
-    // Guarantee that final step has a realistic "delivered" time if order.status === delivered
     return entries;
   };
 
@@ -95,14 +84,12 @@ function TrackOrder() {
       setOrder(res.found);
       setTimeline(buildTimeline(res.found));
     } else {
-      // fallback minimal mock so page still works
       const m = mockOrder(id || "000");
       setOrder(m);
       setTimeline(buildTimeline(m));
     }
   }, [id]);
 
-  // Save updated order status to storage (only if it is a real order from storage)
   const persistOrder = (updated) => {
     try {
       const userJson = localStorage.getItem("user");
@@ -147,7 +134,6 @@ function TrackOrder() {
     const userObj = JSON.parse(userJson);
     const cartKey = `cart-${userObj.email}`;
     const existing = JSON.parse(localStorage.getItem(cartKey)) || [];
-    // Merge items (just push here; you could de-duplicate if you want)
     const toAdd = order.items.map((it) => ({ ...it }));
     const merged = [...existing, ...toAdd];
     localStorage.setItem(cartKey, JSON.stringify(merged));
@@ -156,7 +142,6 @@ function TrackOrder() {
   };
 
   const handleContact = () => {
-    // open mailto with order id in subject
     const subject = encodeURIComponent(`Support request: Order #${order?.id || ""}`);
     const body = encodeURIComponent(
       `Hello support,\n\nI need help with order #${order?.id || ""}.\n\nOrder date: ${order?.date || "—"}\n\nPlease assist.\n`
@@ -173,7 +158,6 @@ function TrackOrder() {
 
   if (!order) return <div className="track-empty">Loading order...</div>;
 
-  // Derive current step index and friendly status label
   const currentIndexRaw = STATUS_STEPS.indexOf((order.status || "pending").toLowerCase());
   const currentIndex = currentIndexRaw >= 0 ? currentIndexRaw : 0;
   const statusLabel =
@@ -199,7 +183,6 @@ function TrackOrder() {
 
         <div className="track-content">
 
-          {/* LEFT: Stepper & timeline */}
           <section className="track-left">
             <div className="stepper">
               {STATUS_STEPS.map((stepName, idx) => {
@@ -211,7 +194,6 @@ function TrackOrder() {
                       <div className="step-name">{stepName.toUpperCase()}</div>
                       <div className="step-time">
                         {(() => {
-                          // find corresponding timeline entry if built
                           const t = timeline.find((t) => t.step === stepName);
                           return t ? fmtDateTime(t.time) : "—";
                         })()}

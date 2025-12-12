@@ -35,7 +35,7 @@ function App() {
         <Route path='/checkout' element={<Checkout/>} />
         <Route path='/orders' element={<Orders/>} /> 
         <Route path='/paymentpage' element={<Paymentpage/>}/>
-        <Route path='/trackorders' element={<TrackOrder/>}/>
+        <Route path='//trackorders' element={<TrackOrder/>}/>
 
      
         <Route element={<ProtectedRoute role='admin' />}>
