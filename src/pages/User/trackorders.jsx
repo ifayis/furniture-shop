@@ -19,9 +19,6 @@ function TrackOrder() {
     "delivered",
   ];
 
-  // --------------------------
-  // FETCH ORDER FROM API
-  // --------------------------
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (!userData) {
@@ -46,9 +43,6 @@ function TrackOrder() {
       });
   }, [id]);
 
-  // --------------------------
-  // BUILD TIMELINE USING STATUS
-  // --------------------------
   const buildTimeline = (ord) => {
     const base = ord?.date ? new Date(ord.date) : new Date();
     const currentIndex = STATUS_STEPS.indexOf(
@@ -61,9 +55,6 @@ function TrackOrder() {
     });
   };
 
-  // --------------------------
-  // CANCEL ORDER (UPDATE API)
-  // --------------------------
   const handleCancel = async () => {
     if (!order) return;
 
@@ -98,9 +89,6 @@ function TrackOrder() {
     }
   };
 
-  // --------------------------
-  // REORDER (LOCAL CART UPDATE ONLY)
-  // --------------------------
   const handleReorder = () => {
     if (!order) return;
 
@@ -202,7 +190,6 @@ function TrackOrder() {
             </div>
           </section>
 
-          {/* RIGHT PANEL */}
           <aside className="track-right">
             <div className="summary-card">
               <h3>Summary</h3>
