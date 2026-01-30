@@ -74,7 +74,7 @@ function Register() {
                 className="register-input"
                 type="text"
                 onChange={(e) =>
-                  setForm({ ...form, username: e.target.value })
+                  setForm({ ...form, FullName: e.target.value })
                 }
                 required
               />
