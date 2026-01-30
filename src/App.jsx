@@ -16,7 +16,7 @@ import AdminUsers from './pages/Admin/admin-users'
 import EditProduct from './pages/Admin/admin-edit-product'
 import Paymentpage from './pages/User/paymentpage'
 import TrackOrder from './pages/User/trackorders'
-
+import Unauthorized from './pages/Auth/Unauthirized'
 
 function App() {
   const location = useLocation();
@@ -36,7 +36,7 @@ function App() {
         <Route path='/orders' element={<Orders/>} /> 
         <Route path='/paymentpage' element={<Paymentpage/>}/>
         <Route path='//trackorders' element={<TrackOrder/>}/>
-
+        <Route path="/unauthorized" element={<Unauthorized />} />
      
         <Route element={<ProtectedRoute role='admin' />}>
         <Route path='/adminpage' element={<AdminPage />} />
