@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "./css/navbar.css";
+import "@/css/User-Side//navbar.css";
 
 import { getUserFromToken } from "../utils/jwtService";
 import { clearTokens } from "../utils/tokenService";

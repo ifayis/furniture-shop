@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import "../css/register.css";
+import "@/css/Auth-Side/register.css";
 
-import { signUp } from "../api/authApi";
+import { signUp } from "@/api/authApi";
 
 
 function Register() {

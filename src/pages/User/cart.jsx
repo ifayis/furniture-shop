@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "../css/cart.css";
+import "@/css/User-Side//cart.css";
 
 function Cart() {
   const [cart, setCart] = useState([]);

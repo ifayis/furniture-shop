@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/admin-products.css";
+import "@/css/Admin-Side//admin-products.css";
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);

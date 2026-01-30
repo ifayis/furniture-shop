@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "../../css/paymentpage.css";
+import "@/css/User-Side/paymentpage.css";
 
 const API_BASE = "https://furniture-shop-asjh.onrender.com";
 

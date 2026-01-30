@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import "../css/productdetails.css";
+import "@/css/User-Side//productdetails.css";
 
 function Productdetails() {
   const { id } = useParams();

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import "../css/login.css";
+import "@/css/Auth-Side/login.css";
 
-import { signIn } from "../api/authApi";
-import { setTokens } from "../utils/tokenService";
+import { signIn } from "@/api/authApi";
+import { setTokens } from "@/utils/tokenService";
 
 
 function Login() {
