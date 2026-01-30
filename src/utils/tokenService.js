@@ -15,3 +15,8 @@ export const clearTokens = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
 };
+
+export const isAuthenticated = () => {
+  const token = localStorage.getItem("accessToken");
+  return !!token;
+};

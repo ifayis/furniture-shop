@@ -10,10 +10,9 @@ export const getUserFromToken = () => {
     const decoded = jwtDecode(token);
 
     return {
-      FullName: decoded.Name,
-      Role: decoded.Role,
-      Email: decoded.Email,
-      expiresAt: decoded.exp,
+      userId: decoded.UID,
+      role: decoded.Role,
+      email: decoded.Email,
     };
   } catch (err) {
     console.error("Invalid token", err);
