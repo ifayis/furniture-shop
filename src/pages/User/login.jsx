@@ -4,35 +4,12 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import "../css/login.css";
 
-function BackgroundOrbs() {
-  return (
-    <>
-      <motion.div
-        className="bg-orb orb1"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 0.45 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-      />
+import { signIn } from "../api/authApi";
+import { setTokens } from "../utils/tokenService";
 
-      <motion.div
-        className="bg-orb orb2"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 0.35 }}
-        transition={{ duration: 1.4, ease: "easeOut", delay: 0.15 }}
-      />
-
-      <motion.div
-        className="bg-orb orb3"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 0.25 }}
-        transition={{ duration: 1.6, ease: "easeOut", delay: 0.3 }}
-      />
-    </>
-  );
-}
 
 function Login() {
-  const [form, setForm] = useState({ email: "", password: "", role: "user" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -44,25 +21,15 @@ function Login() {
     }
 
     try {
-      const res = await fetch(
-        `https://furniture-shop-asjh.onrender.com/users?email=${form.email}&password=${form.password}&role=${form.role}`
-      );
-      const data = await res.json();
+      const data = await signIn(form.email, form.password);
+      setTokens(data.accessToken, data.refreshToken);
 
-      if (data.length > 0) {
-        localStorage.setItem("user", JSON.stringify(data[0]));
-        if (data[0].role === "admin") {
-          navigate("/adminpage");
-        } else {
-          navigate("/");
-        }
-      } else {
-        toast.warning("Wrong credentials. Please register first.");
-        navigate("/register");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong. Try again.");
+      toast.success("Login successful");
+      navigate("/");
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Invalid email or password");
     }
   };
 
@@ -80,47 +47,26 @@ function Login() {
         </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
-          {/* Role */}
           <div className="form-group">
-            <label className="field-label" htmlFor="role">
-              Role
-            </label>
-            <select
-              id="role"
-              className="login-select"
-              value={form.role}
-              onChange={(e) => setForm({ ...form, role: e.target.value })}
-              required
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="field-label" htmlFor="email">
-              Email
-            </label>
+            <label className="field-label">Email</label>
             <input
-              id="email"
               type="email"
               className="login-input"
-              placeholder="youremail@example.com"
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
               required
             />
           </div>
 
           <div className="form-group">
-            <label className="field-label" htmlFor="password">
-              Password
-            </label>
+            <label className="field-label">Password</label>
             <input
-              id="password"
               type="password"
               className="login-input"
-              placeholder="Enter your password"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, password: e.target.value })
+              }
               required
             />
           </div>
@@ -137,9 +83,6 @@ function Login() {
               Create account
             </Link>
           </p>
-          <button type="button" className="forgot-pass" disabled>
-            Forgot password?
-          </button>
         </div>
       </div>
     </div>
@@ -147,3 +90,13 @@ function Login() {
 }
 
 export default Login;
+
+function BackgroundOrbs() {
+  return (
+    <>
+      <motion.div className="bg-orb orb1" />
+      <motion.div className="bg-orb orb2" />
+      <motion.div className="bg-orb orb3" />
+    </>
+  );
+}
