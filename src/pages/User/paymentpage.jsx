@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "../css/paymentpage.css";
+import "../../css/paymentpage.css";
 
 const API_BASE = "https://furniture-shop-asjh.onrender.com";
 
@@ -25,7 +25,6 @@ function PaymentPage() {
     pin: "",
   });
 
-  // hold server address record id if exists
   const [addressRecord, setAddressRecord] = useState(null);
 
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -93,7 +92,6 @@ function PaymentPage() {
   const totalBeforeDiscount = subtotal + shipping;
   const finalTotal = Math.max(totalBeforeDiscount - discount, 0);
 
-  // coupon
   const handleApplyCoupon = () => {
     if (!totalBeforeDiscount) {
       toast.warning("Add items to cart before applying a coupon.");
@@ -147,7 +145,6 @@ function PaymentPage() {
         setAddressRecord(updated.id || updated._id || null);
         return updated;
       } else {
-        // create new address
         const res = await fetch(`${API_BASE}/Addresses`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -177,7 +174,6 @@ function PaymentPage() {
       paymentMeta.cardMasked = maskCard(card.cardNumber);
       paymentMeta.cardName = card.cardName || "";
       paymentMeta.lastExpiry = card.expiry || "";
-      // DO NOT store CVV or full PAN
     } else if (method === "upi" && upi) {
       paymentMeta.upiId = upi;
     }
@@ -230,17 +226,13 @@ function PaymentPage() {
     }
 
     try {
-      // 1) Save or update address on server (creates address record if missing)
       const savedAddress = await saveOrUpdateAddressOnServer();
-
-      // 2) Create order payload and POST to Orders endpoint
       const orderPayload = {
         userEmail: user.email,
         items: cart,
         total: finalTotal,
         discount,
         shipping: {
-          // store shipping inline (copy of address) and/or reference addressId
           addressId: savedAddress.id || savedAddress._id || addressRecord,
           ...{
             fullName: savedAddress.fullName,
@@ -273,16 +265,13 @@ function PaymentPage() {
       }
       const savedOrder = await orderRes.json();
 
-      // 3) Save payment meta into address record for future updates (masked only)
       if (paymentMethod === "card" || paymentMethod === "upi") {
         await savePaymentMetaToAddress(savedAddress, paymentMethod, cardInfo, upiId);
       }
 
-      // 4) Clean up local cart and navigate to orders/track page using server id (if available)
       localStorage.removeItem(`cart-${user.email}`);
       toast.success("Payment successful! Order placed.");
 
-      // Prefer direct track route if server returns id
       const serverOrderId = savedOrder.id || savedOrder._id || savedOrder.orderId || savedOrder;
       if (serverOrderId) {
         navigate(`/track-order/${serverOrderId}`);
