@@ -6,6 +6,11 @@ export const getAllProducts = async () => {
 };
 
 export const getProductById = async (id) => {
-  const response = await api.get(`/api/products/single/${id}`);
+  const response = await api.get(`/api/products/single${id}`);
+  return response.data.data;
+};
+
+export const getProductsByCategory = async (categoryId) => {
+  const response = await api.get(`/api/products/${categoryId}`);
   return response.data.data;
 };

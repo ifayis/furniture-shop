@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import "@/css/User-Side//products.css";
 
 import { getAllCategories } from "@/api/categoryApi";
-import { getAllProducts } from "@/api/productApi"; // ✅ NEW
+import {
+  getAllProducts,
+  getProductsByCategory,
+} from "@/api/productApi";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -17,10 +20,16 @@ function Products() {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const data = await getAllProducts();
+        setLoading(true);
 
-        const activeProducts = data.filter(p => p.isActive === true);
+        let data;
+        if (category === "All") {
+          data = await getAllProducts();
+        } else {
+          data = await getProductsByCategory(category);
+        }
 
+        const activeProducts = data.filter((p) => p.isActive === true);
         setProducts(activeProducts);
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -30,7 +39,7 @@ function Products() {
     };
 
     loadProducts();
-  }, []);
+  }, [category]);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -46,10 +55,8 @@ function Products() {
   }, []);
 
   const filterProducts = products
-    .filter(
-      (p) =>
-        p.name.toLowerCase().includes(search.toLowerCase()) &&
-        (category === "All" || p.categoryId === category)
+    .filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
       if (sort === "high") return b.price - a.price;
@@ -100,7 +107,6 @@ function Products() {
         </div>
       </div>
 
-      {/* Posters */}
       <h4>Recommended interior designs for you</h4>
       <br />
       <div className="poster-row">
@@ -113,7 +119,6 @@ function Products() {
         <img src="/images/banner4.jpeg" alt="interior" />
       </div>
 
-      {/* Product Scroll */}
       <div className="product-scroll">
         {loading ? (
           <p className="loading-text">
@@ -137,7 +142,9 @@ function Products() {
                 </div>
                 <div className="product-info">
                   <h3 className="product-name">{p.name}</h3>
-                  <p className="product-price">${p.price.toFixed(2)}</p>
+                  <p className="product-price">
+                    ${p.price.toFixed(2)}
+                  </p>
                 </div>
               </Link>
             </div>
@@ -149,8 +156,8 @@ function Products() {
         <div className="promo-content">
           <h2>🎉 Mid-Year Mega Sale!</h2>
           <p>
-            Get up to <span>40% OFF</span> on selected items. Hurry, limited
-            stock!
+            Get up to <span>40% OFF</span> on selected items. Hurry,
+            limited stock!
           </p>
           <Link to="/" className="promo-btn">
             Shop Now
