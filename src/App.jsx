@@ -16,7 +16,7 @@ import AdminUsers from './pages/Admin/admin-users'
 import EditProduct from './pages/Admin/admin-edit-product'
 import Paymentpage from './pages/User/paymentpage'
 import TrackOrder from './pages/User/trackorders'
-import Unauthorized from './pages/Auth/Unauthirized'
+import Unauthorized from './pages/Auth/Unauthorized'
 
 function App() {
   const location = useLocation();

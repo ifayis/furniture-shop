@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "@/css/User-Side//products.css";
 
-import { getAllCategories } from "../api/categoryApi";
+import { getAllCategories } from "@/api/categoryApi";
 
 function Products() {
   const [products, setProducts] = useState([]);
