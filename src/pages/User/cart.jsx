@@ -3,59 +3,98 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "@/css/User-Side//cart.css";
 
+import {
+  getMyCart,
+  updateCartItem,
+  removeCartItem,
+  clearCart,
+} from "@/api/cartApi";
+import { isAuthenticated } from "@/utils/tokenService";
+
 function Cart() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
+    if (!isAuthenticated()) {
       toast.info("Login to continue.");
       navigate("/login");
       return;
     }
-    const userCart =
-      JSON.parse(localStorage.getItem(`cart-${user.email}`)) || [];
-    setCart(userCart);
+
+    const loadCart = async () => {
+      try {
+        const data = await getMyCart();
+        setCart(data);
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to load cart");
+      }
+    };
+
+    loadCart();
   }, [navigate]);
 
   useEffect(() => {
-    const ttl = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const ttl = cart.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
     setTotal(ttl);
   }, [cart]);
 
-  const updateQty = (id, change) => {
-    const updated = cart.map((item) =>
-      item.id === id
-        ? { ...item, qty: Math.max(1, item.qty + change) }
-        : item
-    );
-    setCart(updated);
-    const user = JSON.parse(localStorage.getItem("user"));
-    localStorage.setItem(`cart-${user.email}`, JSON.stringify(updated));
+  const updateQty = async (productId, change) => {
+    const item = cart.find((i) => i.productId === productId);
+    if (!item) return;
+
+    const newQty = Math.max(1, item.quantity + change);
+
+    try {
+      await updateCartItem(productId, newQty);
+
+      setCart((prev) =>
+        prev.map((i) =>
+          i.productId === productId ? { ...i, quantity: newQty } : i
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update quantity");
+    }
   };
 
-  const removeItem = (id) => {
-    const filtered = cart.filter((item) => item.id !== id);
-    setCart(filtered);
-    const user = JSON.parse(localStorage.getItem("user"));
-    localStorage.setItem(`cart-${user.email}`, JSON.stringify(filtered));
+  const removeItem = async (productId) => {
+    try {
+      await removeCartItem(productId);
+      setCart((prev) =>
+        prev.filter((item) => item.productId !== productId)
+      );
+      toast.info("Item removed");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to remove item");
+    }
   };
 
-  const clearCart = () => {
+  const handleClearCart = async () => {
     if (!cart.length) return;
     if (!window.confirm("Remove all items from your cart?")) return;
 
-    setCart([]);
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      localStorage.setItem(`cart-${user.email}`, JSON.stringify([]));
+    try {
+      await clearCart();
+      setCart([]);
+      toast.info("Cart cleared");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to clear cart");
     }
-    toast.info("Cart cleared.");
   };
 
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const totalItems = cart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
   const shipping = total > 0 ? 19 : 0;
 
   return (
@@ -70,7 +109,7 @@ function Cart() {
         </div>
 
         {cart.length > 0 && (
-          <button className="clear-cart-btn" onClick={clearCart}>
+          <button className="clear-cart-btn" onClick={handleClearCart}>
             Clear Cart
           </button>
         )}
@@ -90,47 +129,42 @@ function Cart() {
         </div>
       ) : (
         <div className="cart-layout">
-          {/* Left: items panel */}
+
           <div className="cart-items-panel">
             {cart.map((item) => {
-              const lineTotal = item.price * item.qty;
+              const lineTotal = item.price * item.quantity;
               return (
-                <div className="cart-item" key={item.id}>
+                <div className="cart-item" key={item.productId}>
                   <div className="item-main">
                     <div className="item-image-container">
                       <img
                         className="item-image"
                         src={`/images/${item.image}`}
                         alt={item.name}
-                        loading="lazy"
                       />
                     </div>
 
                     <div className="item-content">
                       <h3 className="item-name">{item.name}</h3>
-                      {item.category && (
-                        <p className="item-meta">
-                          Category:{" "}
-                          <span className="item-meta-highlight">
-                            {item.category}
-                          </span>
-                        </p>
-                      )}
 
                       <div className="item-controls-row">
                         <div className="quantity-controls">
                           <button
                             className="quantity-btn"
-                            onClick={() => updateQty(item.id, -1)}
-                            aria-label="Decrease quantity"
+                            onClick={() =>
+                              updateQty(item.productId, -1)
+                            }
                           >
                             -
                           </button>
-                          <span className="quantity-value">{item.qty}</span>
+                          <span className="quantity-value">
+                            {item.quantity}
+                          </span>
                           <button
                             className="quantity-btn"
-                            onClick={() => updateQty(item.id, 1)}
-                            aria-label="Increase quantity"
+                            onClick={() =>
+                              updateQty(item.productId, 1)
+                            }
                           >
                             +
                           </button>
@@ -138,7 +172,9 @@ function Cart() {
 
                         <button
                           className="remove-item"
-                          onClick={() => removeItem(item.id)}
+                          onClick={() =>
+                            removeItem(item.productId)
+                          }
                         >
                           Remove
                         </button>
@@ -147,7 +183,6 @@ function Cart() {
                   </div>
 
                   <div className="item-pricing">
-                    <p className="item-price-label">Price</p>
                     <p className="item-unit-price">
                       ${item.price.toLocaleString()}
                     </p>
@@ -169,7 +204,7 @@ function Cart() {
             </div>
             <div className="summary-row">
               <span>Shipping</span>
-              <span className="shipping-free">$19</span>
+              <span>$19</span>
             </div>
 
             <div className="summary-divider" />
@@ -179,23 +214,12 @@ function Cart() {
               <span>${(total + shipping).toLocaleString()}</span>
             </div>
 
-            <p className="summary-note">
-              Secure checkout • No extra charges at delivery.
-            </p>
-
             <div className="summary-actions">
               <button
                 className="primary-btn"
                 onClick={() => navigate("/checkout")}
               >
                 Proceed to Checkout
-              </button>
-
-              <button
-                className="secondary-btn"
-                onClick={() => navigate("/")}
-              >
-                Continue Shopping
               </button>
             </div>
           </aside>
