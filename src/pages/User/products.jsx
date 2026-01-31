@@ -1,31 +1,48 @@
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import "@/css/User-Side//products.css"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "@/css/User-Side//products.css";
+
+import { getAllCategories } from "../api/categoryApi";
 
 function Products() {
-  const [products, setProducts] = useState([])
-  const [search, setSearch] = useState("")
-  const [category, setCategory] = useState("All")
-  const [sort, setSort] = useState("")
-  const [loading, setLoading] = useState(true)
+  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+  const [sort, setSort] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     fetch("https://furniture-shop-asjh.onrender.com/products")
       .then((res) => res.json())
       .then((data) => {
-        const active = data.filter((p) => p.isActive !== false)
+        const active = data.filter((p) => p.isActive !== false);
         const unique = Array.from(
           new Map(active.map((p) => [p.name, p])).values()
-        )
-        setProducts(unique)
+        );
+        setProducts(unique);
       })
       .catch((err) => {
-        console.error("Error fetching products:", err)
+        console.error("Error fetching products:", err);
       })
       .finally(() => {
-        setLoading(false)
-      })
-  }, [])
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const data = await getAllCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error("Error loading categories:", err);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   const filterProducts = products
     .filter(
@@ -34,10 +51,10 @@ function Products() {
         (category === "All" || p.category === category)
     )
     .sort((a, b) => {
-      if (sort === "high") return b.price - a.price
-      if (sort === "low") return a.price - b.price
-      return 0
-    })
+      if (sort === "high") return b.price - a.price;
+      if (sort === "low") return a.price - b.price;
+      return 0;
+    });
 
   return (
     <div className="product-listing-container">
@@ -46,7 +63,6 @@ function Products() {
         <p>Premium Furniture. Timeless Style.</p>
       </div>
 
-      {/* Search & Filters */}
       <div className="search-filter-container">
         <div className="search-container">
           <input
@@ -59,16 +75,16 @@ function Products() {
         <div className="select-wrapper">
           <select
             className="filter-select"
+            value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="All">All Categories</option>
-            <option value="chair">Chairs</option>
-            <option value="table">Tables</option>
-            <option value="sofa">Sofas</option>
-            <option value="sheorack">Racks</option>
-            <option value="teapoy">Teapoys</option>
-            <option value="bench">Benches</option>
-            <option value="almirah">Almirahs</option>
+
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -148,7 +164,7 @@ function Products() {
         <p>© 2025 LuxeLiving. All rights reserved.</p>
       </footer>
     </div>
-  )
+  );
 }
 
-export default Products
+export default Products;
