@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "@/css/User-Side//products.css";
 
 import { getAllCategories } from "@/api/categoryApi";
+import { getAllProducts } from "@/api/productApi"; // ✅ NEW
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -14,21 +15,21 @@ function Products() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("https://furniture-shop-asjh.onrender.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        const active = data.filter((p) => p.isActive !== false);
-        const unique = Array.from(
-          new Map(active.map((p) => [p.name, p])).values()
-        );
-        setProducts(unique);
-      })
-      .catch((err) => {
+    const loadProducts = async () => {
+      try {
+        const data = await getAllProducts();
+
+        const activeProducts = data.filter(p => p.isActive === true);
+
+        setProducts(activeProducts);
+      } catch (err) {
         console.error("Error fetching products:", err);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    loadProducts();
   }, []);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function Products() {
 
     loadCategories();
   }, []);
+
   const filterProducts = products
     .filter(
       (p) =>
@@ -50,9 +52,9 @@ function Products() {
         (category === "All" || p.categoryId === category)
     )
     .sort((a, b) => {
-      if (sort === "high") return b.price - a.price
-      if (sort === "low") return a.price - b.price
-      return 0
+      if (sort === "high") return b.price - a.price;
+      if (sort === "low") return a.price - b.price;
+      return 0;
     });
 
   return (
@@ -78,7 +80,6 @@ function Products() {
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="All">All Categories</option>
-
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -112,7 +113,7 @@ function Products() {
         <img src="/images/banner4.jpeg" alt="interior" />
       </div>
 
-      {/* Horizontal Product Scroll */}
+      {/* Product Scroll */}
       <div className="product-scroll">
         {loading ? (
           <p className="loading-text">
@@ -144,7 +145,6 @@ function Products() {
         )}
       </div>
 
-      {/* Promotional Banner */}
       <div className="promo-banner">
         <div className="promo-content">
           <h2>🎉 Mid-Year Mega Sale!</h2>
@@ -158,7 +158,6 @@ function Products() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="footer">
         <p>© 2025 LuxeLiving. All rights reserved.</p>
       </footer>
