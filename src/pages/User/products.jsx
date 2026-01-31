@@ -43,17 +43,16 @@ function Products() {
 
     loadCategories();
   }, []);
-
   const filterProducts = products
     .filter(
       (p) =>
         p.name.toLowerCase().includes(search.toLowerCase()) &&
-        (category === "All" || p.category === category)
+        (category === "All" || p.categoryId === category)
     )
     .sort((a, b) => {
-      if (sort === "high") return b.price - a.price;
-      if (sort === "low") return a.price - b.price;
-      return 0;
+      if (sort === "high") return b.price - a.price
+      if (sort === "low") return a.price - b.price
+      return 0
     });
 
   return (
