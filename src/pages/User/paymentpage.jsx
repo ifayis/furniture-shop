@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "@/css/User-Side/paymentpage.css";
 
+import { makePayment } from "@/api/paymentApi";
+
 const API_BASE = "https://furniture-shop-asjh.onrender.com";
 
 function maskCard(cardNumber = "") {
@@ -26,7 +28,6 @@ function PaymentPage() {
   });
 
   const [addressRecord, setAddressRecord] = useState(null);
-
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardInfo, setCardInfo] = useState({
     cardNumber: "",
@@ -35,7 +36,6 @@ function PaymentPage() {
     cvv: "",
   });
   const [upiId, setUpiId] = useState("");
-
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
@@ -193,96 +193,63 @@ function PaymentPage() {
     }
   }
 
-  const handlePlaceOrder = async () => {
-    if (!user || cart.length === 0) {
-      toast.warning("No items in cart");
-      navigate("/");
+const handlePlaceOrder = async () => {
+  if (!user) {
+    toast.warning("Login required");
+    navigate("/login");
+    return;
+  }
+
+  if (cart.length === 0) {
+    toast.warning("No items in cart");
+    navigate("/");
+    return;
+  }
+
+  const requiredFields = [
+    address.fullName,
+    address.phone,
+    address.line1,
+    address.city,
+    address.pin,
+  ];
+
+  if (requiredFields.some(f => !f || !String(f).trim())) {
+    toast.warning("Please fill all required address fields");
+    return;
+  }
+
+  if (paymentMethod === "card") {
+    if (!cardInfo.cardNumber || !cardInfo.cardName || !cardInfo.expiry || !cardInfo.cvv) {
+      toast.warning("Enter all card details");
       return;
     }
+  }
 
-    const requiredFields = [
-      address.fullName,
-      address.phone,
-      address.line1,
-      address.city,
-      address.pin,
-    ];
-    if (requiredFields.some((f) => !f || !String(f).trim())) {
-      toast.warning("Please fill in all required address fields.");
-      return;
-    }
+  if (paymentMethod === "upi" && !upiId.trim()) {
+    toast.warning("Enter UPI ID");
+    return;
+  }
 
-    if (paymentMethod === "card") {
-      if (!cardInfo.cardNumber || !cardInfo.cardName || !cardInfo.expiry || !cardInfo.cvv) {
-        toast.warning("Please enter all credit card details.");
-        return;
-      }
-    }
-    if (paymentMethod === "upi") {
-      if (!upiId.trim()) {
-        toast.warning("Please enter your UPI ID.");
-        return;
-      }
-    }
+  try {
+    await saveOrUpdateAddressOnServer();
 
-    try {
-      const savedAddress = await saveOrUpdateAddressOnServer();
-      const orderPayload = {
-        userEmail: user.email,
-        items: cart,
-        total: finalTotal,
-        discount,
-        shipping: {
-          addressId: savedAddress.id || savedAddress._id || addressRecord,
-          ...{
-            fullName: savedAddress.fullName,
-            phone: savedAddress.phone,
-            line1: savedAddress.line1,
-            line2: savedAddress.line2,
-            city: savedAddress.city,
-            pin: savedAddress.pin,
-          },
-        },
-        paymentMethod,
-        paymentMeta:
-          paymentMethod === "card"
-            ? { cardMasked: maskCard(cardInfo.cardNumber), cardName: cardInfo.cardName }
-            : paymentMethod === "upi"
-            ? { upiId }
-            : null,
-        status: "pending",
-        date: new Date().toISOString(),
-      };
+    const res = await makePayment(
+      paymentMethod === "card"
+        ? "Card"
+        : paymentMethod === "upi"
+        ? "UPI"
+        : "Cash On Delivery"
+    );
 
-      const orderRes = await fetch(`${API_BASE}/Orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderPayload),
-      });
+    toast.success("Order placed successfully!");
 
-      if (!orderRes.ok) {
-        throw new Error("Failed to create order on server");
-      }
-      const savedOrder = await orderRes.json();
-
-      if (paymentMethod === "card" || paymentMethod === "upi") {
-        await savePaymentMetaToAddress(savedAddress, paymentMethod, cardInfo, upiId);
-      }
-
-      localStorage.removeItem(`cart-${user.email}`);
-      toast.success("Payment successful! Order placed.");
-
-      const serverOrderId = savedOrder.id || savedOrder._id || savedOrder.orderId || savedOrder;
-      if (serverOrderId) {
-        navigate(`/track-order/${serverOrderId}`);
-      } else {
-        navigate("/orders");
-      }
-    } catch (err) {
-      console.error("Order flow error:", err);
-      toast.error("Failed to place order. Try again.");
-    }
-  };
+    navigate("/orders");
+  } catch (err) {
+    console.error("Payment failed:", err);
+    toast.error("Payment failed. Please try again.");
+  }
+};
 
   return (
     <div className="payment-container">
@@ -443,13 +410,13 @@ function PaymentPage() {
         {/* RIGHT SUMMARY */}
         <aside className="payment-summary">
           <h3 className="summary-title">Order Summary</h3>
-          <div className="summary-row"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-          <div className="summary-row"><span>Shipping</span><span>${shipping.toFixed(2)}</span></div>
-          <div className="summary-row"><span>Discount</span><span>- ${discount.toFixed(2)}</span></div>
+          <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
+          <div className="summary-row"><span>Shipping</span><span>₹{shipping.toFixed(2)}</span></div>
+          <div className="summary-row"><span>Discount</span><span>- ₹{discount.toFixed(2)}</span></div>
 
           <div className="summary-divider" />
           <div className="summary-row total">
-            <span>Total</span><span>${finalTotal.toFixed(2)}</span>
+            <span>Total</span><span>₹{finalTotal.toFixed(2)}</span>
           </div>
 
           <div className="summary-actions">
