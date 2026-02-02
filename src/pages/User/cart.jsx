@@ -26,26 +26,7 @@ function Cart() {
     const loadCart = async () => {
       try {
         const data = await getMyCart();
-
-        const rawItems = Array.isArray(data)
-          ? data
-          : Array.isArray(data?.items)
-            ? data.items
-            : [];
-
-        const normalizedCart = rawItems.map((item) => {
-          const product = item.product ?? {};
-
-          return {
-            productId: item.productId,
-            name: product.name ?? "Unknown product",
-            price: Number(product.price ?? 0),
-            image: product.image ?? "placeholder.jpg",
-            quantity: Number(item.quantity ?? 1),
-          };
-        });
-
-        setCart(normalizedCart);
+        setCart(Array.isArray(data) ? data : data.items ?? []);
       } catch (err) {
         console.error(err);
         toast.error("Failed to load cart");
