@@ -95,7 +95,7 @@ function Cart() {
     (sum, item) => sum + item.quantity,
     0
   );
-  const shipping = total > 0 ? 19 : 0;
+  const shipping = total > 500 ? 100 : 0;
 
   return (
     <div className="cart-container">
@@ -184,10 +184,10 @@ function Cart() {
 
                   <div className="item-pricing">
                     <p className="item-unit-price">
-                      ${item.price.toLocaleString()}
+                      ₹{item.price.toLocaleString()}
                     </p>
                     <p className="item-line-total">
-                      Line Total: ${lineTotal.toLocaleString()}
+                      Line Total: ₹{lineTotal.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -200,18 +200,18 @@ function Cart() {
 
             <div className="summary-row">
               <span>Items ({totalItems})</span>
-              <span>${total.toLocaleString()}</span>
+              <span>₹{total.toLocaleString()}</span>
             </div>
             <div className="summary-row">
               <span>Shipping</span>
-              <span>$19</span>
+              <span>₹{shipping}</span>
             </div>
 
             <div className="summary-divider" />
 
             <div className="summary-row summary-total">
               <span>Total</span>
-              <span>${(total + shipping).toLocaleString()}</span>
+              <span>₹{(total + shipping).toLocaleString()}</span>
             </div>
 
             <div className="summary-actions">
