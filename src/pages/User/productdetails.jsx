@@ -4,6 +4,9 @@ import { toast } from "react-toastify";
 import "@/css/User-Side//productdetails.css";
 
 import { getProductById, getAllProducts } from "@/api/productApi";
+import { addToCart } from "@/api/cartApi";
+import { isAuthenticated } from "@/utils/tokenService";
+
 
 function Productdetails() {
   const { id } = useParams();
@@ -67,27 +70,20 @@ function Productdetails() {
     localStorage.setItem(key, JSON.stringify(updated));
   };
 
-  const addCart = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
-      toast.warning("Login to continue.");
+  const addCart = async () => {
+    if (!isAuthenticated()) {
+      toast.warning("Login to continue");
       navigate("/login");
       return;
     }
 
-    toast.info("Item added to cart");
-
-    const key = `cart-${user.email}`;
-    const cart = JSON.parse(localStorage.getItem(key)) || [];
-    const existing = cart.find((item) => item.id === product.id);
-
-    if (existing) {
-      existing.qty += qty;
-    } else {
-      cart.push({ ...product, qty });
+    try {
+      await addToCart(product.id, qty);
+      toast.success("Item added to cart");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to add item to cart");
     }
-
-    localStorage.setItem(key, JSON.stringify(cart));
   };
 
   const handleSubmitReview = (e) => {
