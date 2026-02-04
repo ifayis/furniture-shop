@@ -77,7 +77,7 @@ function Orders() {
           <div className="orders-top-left">
             <h1 className="orders-title">Your Orders</h1>
             <p className="orders-subtitle">
-              {totalOrders} order{totalOrders !== 1 ? "s" : ""} • $
+              {totalOrders} order{totalOrders !== 1 ? "s" : ""} • ₹
               {totalSpent.toLocaleString()} spent
             </p>
           </div>
@@ -141,7 +141,7 @@ function Orders() {
                       {order.status !== "Paid" && order.status !== "Cancelled" && (
                         <button
                           className="primary-btn"
-                          onClick={() => navigate("/trackorders")}
+                          onClick={() => navigate(`/track-order/${order.orderId}`)}
                         >
                           Track
                         </button>

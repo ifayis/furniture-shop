@@ -3,13 +3,17 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "@/css/User-Side/trackorders.css";
 
+import { cancelOrder } from "@/api/orderApi";
+import api from "@/api/axios";
+import { isAuthenticated } from "@/utils/tokenService";
+import { getOrderDetails } from "../../api/orderApi";
+
 function TrackOrder() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [order, setOrder] = useState(null);
   const [timeline, setTimeline] = useState([]);
-  const [user, setUser] = useState(null);
 
   const STATUS_STEPS = [
     "pending",
@@ -20,28 +24,42 @@ function TrackOrder() {
   ];
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (!userData) {
+    if (!isAuthenticated()) {
       toast.warning("Login to continue.");
       navigate("/login");
       return;
     }
-    setUser(userData);
 
-    fetch(`https://furniture-shop-asjh.onrender.com/Orders/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Order not found");
-        return res.json();
-      })
-      .then((data) => {
-        setOrder(data);
-        setTimeline(buildTimeline(data));
-      })
-      .catch(() => {
-        toast.error("Order not found on server");
+    const loadOrder = async () => {
+      try {
+        const data = await getOrderDetails(id);
+
+        const normalized = {
+          id: data.orderId,
+          total: data.totalAmount,
+          status: data.status.toLowerCase(),
+          date: data.createdAt,
+          discount: 0,
+          items: data.items.map((i) => ({
+            id: i.productId,
+            name: "Product",
+            qty: i.quantity,
+            price: i.price,
+            image: "product-placeholder.png",
+          })),
+          shipping: null,
+        };
+
+        setOrder(normalized);
+        setTimeline(buildTimeline(normalized));
+      } catch (err) {
+        toast.error("Order not found");
         navigate("/orders");
-      });
-  }, [id]);
+      }
+    };
+
+    loadOrder();
+  }, [id, navigate]);
 
   const buildTimeline = (ord) => {
     const base = ord?.date ? new Date(ord.date) : new Date();
@@ -49,10 +67,11 @@ function TrackOrder() {
       (ord.status || "pending").toLowerCase()
     );
 
-    return STATUS_STEPS.map((step, idx) => {
-      const ts = new Date(base.getTime() + (idx - currentIndex) * 12 * 3600 * 1000);
-      return { step, time: ts, done: idx <= currentIndex };
-    });
+    return STATUS_STEPS.map((step, idx) => ({
+      step,
+      time: new Date(base.getTime() + idx * 6 * 3600 * 1000),
+      done: idx <= currentIndex,
+    }));
   };
 
   const handleCancel = async () => {
@@ -65,45 +84,30 @@ function TrackOrder() {
 
     if (!window.confirm("Are you sure you want to cancel this order?")) return;
 
-    const updated = {
-      ...order,
-      status: "cancelled",
-      cancelledAt: new Date().toISOString(),
-    };
-
     try {
-      await fetch(
-        `https://furniture-shop-asjh.onrender.com/Orders/${order.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updated),
-        }
-      );
+      await cancelOrder(order.id);
+
+      const updated = {
+        ...order,
+        status: "cancelled",
+        cancelledAt: new Date().toISOString(),
+      };
 
       setOrder(updated);
       setTimeline(buildTimeline(updated));
       toast.success("Order cancelled.");
-    } catch (err) {
-      toast.error("Failed to update the order.");
+    } catch(err) {
+      console.log(err);
+      toast.error("Failed to cancel order.");
     }
   };
 
   const handleReorder = () => {
     if (!order) return;
 
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (!userData) {
-      toast.info("Login to reorder.");
-      navigate("/login");
-      return;
-    }
-
-    const cartKey = `cart-${userData.email}`;
-    const existing = JSON.parse(localStorage.getItem(cartKey)) || [];
-
-    const newCart = [...existing, ...order.items];
-    localStorage.setItem(cartKey, JSON.stringify(newCart));
+    const existing = JSON.parse(localStorage.getItem("cart")) || [];
+    const merged = [...existing, ...order.items];
+    localStorage.setItem("cart", JSON.stringify(merged));
 
     toast.success("Items added to cart.");
     navigate("/cart");
@@ -116,16 +120,14 @@ function TrackOrder() {
     });
 
   const fmtMoney = (n) =>
-    n.toLocaleString(undefined, {
+    Number(n).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
 
   if (!order) return <div className="track-empty">Loading order...</div>;
 
-  const currentIndex = STATUS_STEPS.indexOf(
-    (order.status || "pending").toLowerCase()
-  );
+  const currentIndex = STATUS_STEPS.indexOf(order.status);
 
   return (
     <div className="track-container">
@@ -233,7 +235,7 @@ function TrackOrder() {
 
               <div className="summary-row">
                 <span>Shipping</span>
-                <span>₹ 19.00</span>
+                <span>₹ 100.00</span>
               </div>
 
               <div className="summary-total">
