@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "@/css/Admin-Side//admin-edit-product.css";
 
+import { getProductById, updateProduct } from "@/api/productApi";
+
 function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     category: "",
@@ -14,9 +17,10 @@ function EditProduct() {
   });
 
   useEffect(() => {
-    fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
+    const loadProduct = async () => {
+      try {
+        const data = await getProductById(id);
+
         setForm({
           name: data.name || "",
           category: data.category || "",
@@ -24,8 +28,12 @@ function EditProduct() {
           image: data.image || "",
           description: data.description || "",
         });
-      })
-      .catch((err) => console.error("Error fetching product:", err));
+      } catch (err) {
+        console.error("Error fetching product:", err);
+      }
+    };
+
+    loadProduct();
   }, [id]);
 
   const handleUpdate = async () => {
@@ -33,16 +41,16 @@ function EditProduct() {
       return;
     }
 
-    await fetch(
-      `https://furniture-shop-asjh.onrender.com/products/${id}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, price: Number(form.price) }),
-      }
-    );
+    try {
+      await updateProduct(id, {
+        ...form,
+        price: Number(form.price),
+      });
 
-    navigate("/admin-products");
+      navigate("/admin-products");
+    } catch (err) {
+      console.error("Error updating product:", err);
+    }
   };
 
   return (
@@ -66,7 +74,9 @@ function EditProduct() {
                 className="form-input"
                 placeholder="Enter product name"
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
               />
             </div>
 
@@ -100,7 +110,9 @@ function EditProduct() {
                 step="0.01"
                 placeholder="Enter price"
                 value={form.price}
-                onChange={(e) => setForm({ ...form, price: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, price: e.target.value })
+                }
               />
             </div>
 
@@ -110,7 +122,9 @@ function EditProduct() {
                 className="form-input"
                 placeholder="eg. chair1.jpg"
                 value={form.image}
-                onChange={(e) => setForm({ ...form, image: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, image: e.target.value })
+                }
               />
             </div>
 
@@ -169,10 +183,13 @@ function EditProduct() {
                     : "Price"}
                 </p>
                 {form.category && (
-                  <span className="preview-category">{form.category}</span>
+                  <span className="preview-category">
+                    {form.category}
+                  </span>
                 )}
                 <p className="preview-description">
-                  {form.description || "Product description will appear here."}
+                  {form.description ||
+                    "Product description will appear here."}
                 </p>
               </div>
             </div>

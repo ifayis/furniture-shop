@@ -15,13 +15,11 @@ function AdminUsers() {
   const [userStats, setUserStats] = useState(null);
   const navigate = useNavigate();
 
-  // 🔹 Load all users
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const data = await getAllUsers();
 
-        // Keep same UI behavior (exclude admins)
         const filtered = data.filter((u) => u.role !== "Admin");
         setUsers(filtered);
       } catch (err) {
@@ -32,7 +30,6 @@ function AdminUsers() {
     loadUsers();
   }, []);
 
-  // 🔹 Block / Unblock user
   const handleBlockToggle = async (user) => {
     try {
       if (user.isBlocked) {
@@ -51,7 +48,6 @@ function AdminUsers() {
     }
   };
 
-  // 🔹 View user info
   const handleViewInfo = async (user) => {
     try {
       const data = await getUserById(user.id);
@@ -117,9 +113,8 @@ function AdminUsers() {
                       <span className="user-email">{user.email}</span>
                     </td>
                     <td
-                      className={`status-cell ${
-                        user.isBlocked ? "blocked" : "active"
-                      }`}
+                      className={`status-cell ${user.isBlocked ? "blocked" : "active"
+                        }`}
                     >
                       {user.isBlocked ? "Blocked" : "Active"}
                     </td>
@@ -132,9 +127,8 @@ function AdminUsers() {
                       </button>
 
                       <button
-                        className={`action-btn ${
-                          user.isBlocked ? "unblock-btn" : "block-btn"
-                        }`}
+                        className={`action-btn ${user.isBlocked ? "unblock-btn" : "block-btn"
+                          }`}
                         onClick={() => handleBlockToggle(user)}
                       >
                         {user.isBlocked ? "Unblock" : "Block"}

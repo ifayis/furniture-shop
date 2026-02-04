@@ -2,11 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "@/css/Admin-Side//adminpage.css";
 
+import { clearTokens } from "../utils/tokenService";
+
 function AdminPage() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    clearTokens();
+    toast.success("Logged out successfully");
     navigate("/login", { replace: true });
   };
 
