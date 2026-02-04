@@ -170,13 +170,7 @@ function PaymentPage() {
     try {
       await saveOrUpdateAddress();
 
-      await makePayment(
-        paymentMethod === "card"
-          ? "Card"
-          : paymentMethod === "upi"
-            ? "UPI"
-            : "Cash On Delivery"
-      );
+      await makePayment();
 
       toast.success("Order placed successfully!");
       navigate("/orders");

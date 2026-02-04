@@ -15,14 +15,6 @@ export const signIn = async (email, password) => {
   return response.data.data;
 };
 
-export const refreshToken = async (refreshToken) => {
-  const response = await api.post("/api/auth/refresh-token", {
-    refreshToken,
-  });
-
-  return response.data.data;
-};
-
 export const logout = async () => {
   await api.post("/api/auth/logout");
 };

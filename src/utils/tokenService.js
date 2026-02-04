@@ -3,13 +3,11 @@ export const setTokens = (accessToken, refreshToken) => {
   localStorage.setItem("refreshToken", refreshToken);
 };
 
-export const getAccessToken = () => {
-  return localStorage.getItem("accessToken");
-};
+export const getAccessToken = () =>
+  localStorage.getItem("accessToken");
 
-export const getRefreshToken = () => {
-  return localStorage.getItem("refreshToken");
-};
+export const getRefreshToken = () =>
+  localStorage.getItem("refreshToken");
 
 export const clearTokens = () => {
   localStorage.removeItem("accessToken");
@@ -17,30 +15,27 @@ export const clearTokens = () => {
 };
 
 export const isAuthenticated = () => {
-  const token = localStorage.getItem("accessToken");
-  return !!token;
+  return !!getAccessToken();
 };
 
 export const getDecodedToken = () => {
-  const token = localStorage.getItem("accessToken");
+  const token = getAccessToken();
   if (!token) return null;
 
   try {
     const payload = token.split(".")[1];
     return JSON.parse(atob(payload));
-  } catch (err) {
-    console.error("Invalid token", err);
+  } catch {
     return null;
   }
 };
 
 export const getUserRole = () => {
   const decoded = getDecodedToken();
-  return decoded?.Role || null;
+  return decoded?.Role ?? null;
 };
 
 export const getUserId = () => {
   const decoded = getDecodedToken();
-  return decoded?.UID || null;
+  return decoded?.UID ?? null;
 };
-
