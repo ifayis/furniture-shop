@@ -4,8 +4,13 @@ import { toast } from "react-toastify";
 import "@/css/User-Side/paymentpage.css";
 
 import { makePayment } from "@/api/paymentApi";
-
-const API_BASE = "https://furniture-shop-asjh.onrender.com";
+import { getMyCart } from "@/api/cartApi";
+import {
+  getMyShippingAddresses,
+  createShippingAddress,
+  updateShippingAddress,
+} from "@/api/shippingAddressApi";
+import { isAuthenticated } from "@/utils/tokenService";
 
 function maskCard(cardNumber = "") {
   const digits = cardNumber.replace(/\D/g, "");
@@ -14,20 +19,18 @@ function maskCard(cardNumber = "") {
 }
 
 function PaymentPage() {
-  const [user, setUser] = useState(null);
-
   const [cart, setCart] = useState([]);
+  const [addressRecord, setAddressRecord] = useState(null);
 
   const [address, setAddress] = useState({
     fullName: "",
-    phone: "",
-    line1: "",
-    line2: "",
+    phoneNumber: "",
+    addressLine1: "",
+    addressLine2: "",
     city: "",
-    pin: "",
+    pinCode: "",
   });
 
-  const [addressRecord, setAddressRecord] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardInfo, setCardInfo] = useState({
     cardNumber: "",
@@ -36,6 +39,7 @@ function PaymentPage() {
     cvv: "",
   });
   const [upiId, setUpiId] = useState("");
+
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
@@ -43,213 +47,144 @@ function PaymentPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (!userData) {
+    if (!isAuthenticated()) {
       toast.info("Please login to continue.");
       navigate("/login");
       return;
     }
-    setUser(userData);
 
-    const cartKey = `cart-${userData.email}`;
-    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
-    setCart(storedCart);
-
-    (async () => {
+    const loadCart = async () => {
       try {
-        const q = encodeURIComponent(userData.email);
-        const res = await fetch(`${API_BASE}/Addresses?userEmail=${q}`);
-        if (!res.ok) throw new Error("Failed to fetch addresses");
-        const arr = await res.json();
-        if (Array.isArray(arr) && arr.length > 0) {
-          const addr = arr[0];
-          setAddressRecord(addr.id || addr._id || null);
-          setAddress({
-            fullName: addr.fullName || "",
-            phone: addr.phone || "",
-            line1: addr.line1 || "",
-            line2: addr.line2 || "",
-            city: addr.city || "",
-            pin: addr.pin || "",
-          });
-          if (addr.paymentMeta) {
-            if (addr.paymentMeta.method === "upi" && addr.paymentMeta.upiId) {
-              setUpiId(addr.paymentMeta.upiId);
-              setPaymentMethod("upi");
-            } else if (addr.paymentMeta.method === "card" && addr.paymentMeta.cardMasked) {
-              setPaymentMethod("card");
-            }
-          }
-        }
+        const data = await getMyCart();
+
+        const items = Array.isArray(data?.items) ? data.items : [];
+
+        const normalized = items.map(i => ({
+          productId: i.productId,
+          name: i.name,
+          price: Number(i.price),
+          image: i.imageurl,
+          qty: Number(i.quantity)
+        }));
+
+        setCart(normalized);
       } catch (err) {
-        console.warn("Could not load saved address:", err.message || err);
+        console.error(err);
+        toast.error("Failed to load cart");
       }
-    })();
-  }, [navigate]);
-
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const shipping = subtotal > 0 ? 29 : 0;
-  const totalBeforeDiscount = subtotal + shipping;
-  const finalTotal = Math.max(totalBeforeDiscount - discount, 0);
-
-  const handleApplyCoupon = () => {
-    if (!totalBeforeDiscount) {
-      toast.warning("Add items to cart before applying a coupon.");
-      return;
-    }
-    if (couponApplied) {
-      toast.info("Coupon already applied.");
-      return;
-    }
-    const code = coupon.trim().toUpperCase();
-    const isValid = code.length === 7 && /^[A-Z0-9]+$/.test(code);
-    if (!isValid) {
-      toast.warning("Wrong coupon code.");
-      return;
-    }
-    setCoupon(code);
-    setDiscount(10);
-    setCouponApplied(true);
-    toast.success("Coupon applied! $10 discount added.");
-  };
-
-  async function saveOrUpdateAddressOnServer(onlyAddress = true) {
-    if (!user) throw new Error("No user");
-    const payload = {
-      userEmail: user.email,
-      fullName: address.fullName,
-      phone: address.phone,
-      line1: address.line1,
-      line2: address.line2,
-      city: address.city,
-      pin: address.pin,
     };
 
-    try {
-      const q = encodeURIComponent(user.email);
-      const listRes = await fetch(`${API_BASE}/Addresses?userEmail=${q}`);
-      if (!listRes.ok) throw new Error("Failed to query Addresses");
-      const list = await listRes.json();
-      if (Array.isArray(list) && list.length > 0) {
-        const rec = list[0];
-        const id = rec.id || rec._id || rec.id === 0 ? rec.id : undefined;
-        const patchBody = { ...payload };
+    loadCart();
 
-        const res = await fetch(`${API_BASE}/Addresses/${id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(patchBody),
-        });
-        if (!res.ok) throw new Error("Failed to update address");
-        const updated = await res.json();
-        setAddressRecord(updated.id || updated._id || null);
-        return updated;
-      } else {
-        const res = await fetch(`${API_BASE}/Addresses`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error("Failed to create address");
-        const created = await res.json();
-        setAddressRecord(created.id || created._id || null);
-        return created;
+    const loadAddress = async () => {
+      try {
+        const addresses = await getMyShippingAddresses();
+        if (Array.isArray(addresses) && addresses.length > 0) {
+          const addr = addresses[0];
+          setAddressRecord(addr.id);
+          setAddress({
+            fullName: addr.fullName || "",
+            phoneNumber: addr.phone || "",
+            addressLine1: addr.line1 || "",
+            addressLine2: addr.line2 || "",
+            city: addr.city || "",
+            pinCode: addr.pin || "",
+          });
+        }
+      } catch {
       }
-    } catch (err) {
-      console.error("Address save/update error:", err);
-      throw err;
+    };
+
+    loadAddress();
+  }, [navigate]);
+
+  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const shipping = subtotal > 500 ? 100 : 0;
+  const finalTotal = Math.max(subtotal + shipping - discount, 0);
+
+  const handleApplyCoupon = () => {
+    if (!subtotal || couponApplied) return;
+    if (!/^[A-Z0-9]{7}$/.test(coupon)) {
+      toast.warning("Invalid coupon code");
+      return;
     }
-  }
+    setDiscount(50);
+    setCouponApplied(true);
+    toast.success("Coupon applied");
+  };
 
-  async function savePaymentMetaToAddress(addressRec, method, card, upi) {
-    if (!addressRec || !addressRec.id && !addressRec._id && !addressRecord) {
-      if (!addressRecord) return null;
+  const saveOrUpdateAddress = async () => {
+    const payload = { ...address };
+
+    if (addressRecord) {
+      return await updateShippingAddress(addressRecord, payload);
+    } else {
+      const created = await createShippingAddress(payload);
+      setAddressRecord(created.id);
+      return created;
     }
-    const id = addressRec?.id || addressRec?._id || addressRecord;
-    if (!id) return null;
+  };
 
-    const paymentMeta = { method: method };
-
-    if (method === "card" && card && card.cardNumber) {
-      paymentMeta.cardMasked = maskCard(card.cardNumber);
-      paymentMeta.cardName = card.cardName || "";
-      paymentMeta.lastExpiry = card.expiry || "";
-    } else if (method === "upi" && upi) {
-      paymentMeta.upiId = upi;
+  const handlePlaceOrder = async () => {
+    if (!cart || cart.length === 0) {
+      toast.warning("Cart is empty");
+      return;
     }
 
-    try {
-      const res = await fetch(`${API_BASE}/Addresses/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paymentMeta }),
-      });
-      if (!res.ok) throw new Error("Failed to save payment meta");
-      const updated = await res.json();
-      return updated;
-    } catch (err) {
-      console.warn("Could not save payment meta to address:", err);
-      return null;
+    const required = [
+      address.fullName,
+      address.phone,
+      address.line1,
+      address.city,
+      address.pin,
+    ];
+
+    const hasEmptyField = required.some(
+      (f) => String(f ?? "").trim() === ""
+    );
+
+    if (hasEmptyField) {
+      toast.warning("Fill all required address fields");
+      return;
     }
-  }
 
-const handlePlaceOrder = async () => {
-  if (!user) {
-    toast.warning("Login required");
-    navigate("/login");
-    return;
-  }
-
-  if (cart.length === 0) {
-    toast.warning("No items in cart");
-    navigate("/");
-    return;
-  }
-
-  const requiredFields = [
-    address.fullName,
-    address.phone,
-    address.line1,
-    address.city,
-    address.pin,
-  ];
-
-  if (requiredFields.some(f => !f || !String(f).trim())) {
-    toast.warning("Please fill all required address fields");
-    return;
-  }
-
-  if (paymentMethod === "card") {
-    if (!cardInfo.cardNumber || !cardInfo.cardName || !cardInfo.expiry || !cardInfo.cvv) {
+    if (
+      paymentMethod === "card" &&
+      (!cardInfo.cardNumber ||
+        !cardInfo.cardName ||
+        !cardInfo.expiry ||
+        !cardInfo.cvv)
+    ) {
       toast.warning("Enter all card details");
       return;
     }
-  }
 
-  if (paymentMethod === "upi" && !upiId.trim()) {
-    toast.warning("Enter UPI ID");
-    return;
-  }
+    if (
+      paymentMethod === "upi" &&
+      String(upiId ?? "").trim() === ""
+    ) {
+      toast.warning("Enter UPI ID");
+      return;
+    }
 
-  try {
-    await saveOrUpdateAddressOnServer();
+    try {
+      await saveOrUpdateAddress();
 
-    const res = await makePayment(
-      paymentMethod === "card"
-        ? "Card"
-        : paymentMethod === "upi"
-        ? "UPI"
-        : "Cash On Delivery"
-    );
+      await makePayment(
+        paymentMethod === "card"
+          ? "Card"
+          : paymentMethod === "upi"
+            ? "UPI"
+            : "Cash On Delivery"
+      );
 
-    toast.success("Order placed successfully!");
-
-    navigate("/orders");
-  } catch (err) {
-    console.error("Payment failed:", err);
-    toast.error("Payment failed. Please try again.");
-  }
-};
+      toast.success("Order placed successfully!");
+      navigate("/orders");
+    } catch (err) {
+      console.error(err);
+      toast.error("Payment failed");
+    }
+  };
 
   return (
     <div className="payment-container">
@@ -275,20 +210,20 @@ const handlePlaceOrder = async () => {
                 type="text"
                 placeholder="Phone Number"
                 value={address.phone}
-                onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+                onChange={(e) => setAddress({ ...address, phoneNumber: e.target.value })}
               />
             </div>
             <input
               type="text"
               placeholder="Address Line 1"
               value={address.line1}
-              onChange={(e) => setAddress({ ...address, line1: e.target.value })}
+              onChange={(e) => setAddress({ ...address, addressLine1: e.target.value })}
             />
             <input
               type="text"
               placeholder="Address Line 2"
               value={address.line2}
-              onChange={(e) => setAddress({ ...address, line2: e.target.value })}
+              onChange={(e) => setAddress({ ...address, addressLine2: e.target.value })}
             />
             <div className="address-grid">
               <input
@@ -301,7 +236,7 @@ const handlePlaceOrder = async () => {
                 type="text"
                 placeholder="PIN Code"
                 value={address.pin}
-                onChange={(e) => setAddress({ ...address, pin: e.target.value })}
+                onChange={(e) => setAddress({ ...address, pinCode: e.target.value })}
               />
             </div>
           </div>
