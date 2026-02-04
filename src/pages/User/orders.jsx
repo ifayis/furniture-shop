@@ -123,7 +123,7 @@ function Orders() {
                       <div className="order-item-row" key={item.id}>
                         <span>Qty: {item.qty}</span>
                         <span>
-                          ${(item.price * item.qty).toLocaleString()}
+                          ₹{(item.price * item.qty).toLocaleString()}
                         </span>
                       </div>
                     ))}
@@ -133,7 +133,7 @@ function Orders() {
                     <div className="order-total">
                       <span>Order Total</span>
                       <span className="total-amount">
-                        ${order.total.toLocaleString()}
+                        ₹{order.total.toLocaleString()}
                       </span>
                     </div>
 
