@@ -1,17 +1,18 @@
-import { Navigate } from "react-router-dom";
-import { getUserRole, isAuthenticated } from "@/utils/tokenService";
+import { Navigate, Outlet } from "react-router-dom";
+import { isAuthenticated, getUserRole } from "@/utils/tokenService";
 
-const AdminRoute = ({ children }) => {
+const AdminRoute = () => {
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
 
   const role = getUserRole();
+
   if (role !== "Admin") {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default AdminRoute;

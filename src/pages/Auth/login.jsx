@@ -6,6 +6,7 @@ import "@/css/Auth-Side/login.css";
 
 import { signIn } from "@/api/authApi";
 import { setTokens } from "@/utils/tokenService";
+import { getUserRole } from "@/utils/tokenService";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -23,6 +24,12 @@ function Login() {
       const data = await signIn(form.email, form.password);
       setTokens(data.accessToken, data.refreshToken);
 
+      const role = getUserRole();
+      if (role === "Admin") {
+        navigate("/adminpage", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
       toast.success("Login successful");
       navigate("/");
 
