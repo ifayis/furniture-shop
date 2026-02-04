@@ -16,6 +16,7 @@ import AdminUsers from './pages/Admin/admin-users'
 import EditProduct from './pages/Admin/admin-edit-product'
 import Paymentpage from './pages/User/paymentpage'
 import TrackOrder from './pages/User/trackorders'
+import AdminRoute from './Route/AdminRoute'
 import Unauthorized from './pages/Auth/Unauthorized'
 
 function App() {
@@ -38,7 +39,8 @@ function App() {
         <Route path='//trackorders' element={<TrackOrder/>}/>
         <Route path="/unauthorized" element={<Unauthorized />} />
      
-        <Route element={<ProtectedRoute role='admin' />}>
+        <Route element={<ProtectedRoute allowedRoles='Admin' />}>
+        <Route path='/admin/*' element={ <AdminRoute/>}/>
         <Route path='/adminpage' element={<AdminPage />} />
         <Route path='/admin-products' element={<AdminProducts />} />
         <Route path='/admin-users' element={<AdminUsers/>} />

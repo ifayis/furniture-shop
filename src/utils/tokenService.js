@@ -20,3 +20,27 @@ export const isAuthenticated = () => {
   const token = localStorage.getItem("accessToken");
   return !!token;
 };
+
+export const getDecodedToken = () => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) return null;
+
+  try {
+    const payload = token.split(".")[1];
+    return JSON.parse(atob(payload));
+  } catch (err) {
+    console.error("Invalid token", err);
+    return null;
+  }
+};
+
+export const getUserRole = () => {
+  const decoded = getDecodedToken();
+  return decoded?.Role || null;
+};
+
+export const getUserId = () => {
+  const decoded = getDecodedToken();
+  return decoded?.UID || null;
+};
+

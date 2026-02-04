@@ -1,18 +1,17 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getUserFromToken } from "../utils/jwtService";
+import { isAuthenticated, getUserRole } from "@/utils/tokenService";
 
 const ProtectedRoute = ({ allowedRoles }) => {
-  const user = getUserFromToken();
-
-  if (!user) {
+  if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
 
-  if (
-    allowedRoles &&
-    !allowedRoles.includes(user.role)
-  ) {
-    return <Navigate to="/unauthorized" replace />;
+  if (allowedRoles && allowedRoles.length > 0) {
+    const role = getUserRole();
+
+    if (!role || !allowedRoles.includes(role)) {
+      return <Navigate to="/unauthorized" replace />;
+    }
   }
 
   return <Outlet />;
