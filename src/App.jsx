@@ -28,28 +28,30 @@ function App() {
       {!hideNavbar && <Navbar />}
       <ToastContainer position="bottom-center" autoClose={1000} />
       <Routes>
-      <Route element={<ProtectedRoute />}>
-        <Route path='/register' element={< Register />} />
-        <Route path='/login' element={< Login />} />
-        <Route path='/' element={< Products />} />
-        <Route path='/products/:id' element={<Productdetails />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/checkout' element={<Checkout />} />
-        <Route path='/orders' element={<Orders />} />
-        <Route path='/paymentpage' element={<Paymentpage />} />
-        <Route path='/trackorders' element={<TrackOrder />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
-      </Route>
-      <Route element={<AdminRoute />}>
-        <Route path='/admin/*' element={<AdminRoute />} />
-        <Route path='/adminpage' element={<AdminPage />} />
-        <Route path='/admin-products' element={<AdminProducts />} />
-        <Route path='/admin-users' element={<AdminUsers />} />
-        <Route path="/admin-edit-product/:id" element={<EditProduct />} />
-      </Route>
+        <Route path="/" element={<Products />} />
+        <Route path="/products/:id" element={<Productdetails />} />
+
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/paymentpage" element={<Paymentpage />} />
+          <Route path="/trackorders" element={<TrackOrder />} />
+        </Route>
+
+        <Route element={<AdminRoute />}>
+          <Route path="/adminpage" element={<AdminPage />} />
+          <Route path="/admin-products" element={<AdminProducts />} />
+          <Route path="/admin-users" element={<AdminUsers />} />
+          <Route path="/admin-edit-product/:id" element={<EditProduct />} />
+        </Route>
       </Routes>
     </>
   )
 }
 
-export default App
+export default App;

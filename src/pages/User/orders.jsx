@@ -141,7 +141,7 @@ function Orders() {
                       {order.status !== "Paid" && order.status !== "Cancelled" && (
                         <button
                           className="primary-btn"
-                          onClick={() => navigate(`/track-order/${order.orderId}`)}
+                          onClick={() => navigate("/trackorders")}
                         >
                           Track
                         </button>

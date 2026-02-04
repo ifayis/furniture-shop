@@ -6,7 +6,7 @@ import "@/css/Auth-Side/login.css";
 
 import { signIn } from "@/api/authApi";
 import { setTokens } from "@/utils/tokenService";
-import { getUserRole } from "@/utils/tokenService";
+import { getUserRole, getUserId } from "@/utils/tokenService";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -31,7 +31,9 @@ function Login() {
         navigate("/", { replace: true });
       }
       toast.success("Login successful");
-      navigate("/");
+
+      console.log("User Role:", getUserRole());
+      console.log("User ID:", getUserId());
 
     } catch (error) {
       console.error(error);
