@@ -1,18 +1,25 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "@/css/Admin-Side//adminpage.css";
+import { toast } from "react-toastify";
 
-import { clearTokens } from "../utils/tokenService";
+import { logout } from "@/api/authApi";
+import { clearTokens } from "@/utils/tokenService";
 
 function AdminPage() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+const handleLogout = async () => {
+  try {
+    await logout();
+  } catch (err) {
+    console.warn("Logout API failed, clearing tokens anyway");
+  } finally {
     clearTokens();
     toast.success("Logged out successfully");
     navigate("/login", { replace: true });
-  };
-
+  }
+};
   return (
     <div className="admin-dashboard">
       <div className="admin-container">
