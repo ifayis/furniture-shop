@@ -8,7 +8,7 @@ import {
   activateProduct,
   deactivateProduct,
   deleteProduct,
-} from "@/api/productsApi";
+} from "@/api/productApi";
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);

@@ -114,14 +114,26 @@ function PaymentPage() {
   };
 
   const saveOrUpdateAddress = async () => {
-    const payload = { ...address };
+    const payload = {
+      fullName: address.fullName,
+      phoneNumber: address.phoneNumber,
+      addressLine1: address.addressLine1,
+      addressLine2: address.addressLine2,
+      city: address.city,
+      pinCode: address.pinCode,
+    };
 
     if (addressRecord) {
-      return await updateShippingAddress(addressRecord, payload);
-    } else {
-      const created = await createShippingAddress(payload);
-      setAddressRecord(created.id);
-      return created;
+      await updateShippingAddress(addressRecord, payload);
+      return;
+    }
+
+    await createShippingAddress(payload);
+
+    const addresses = await getMyShippingAddresses();
+
+    if (Array.isArray(addresses) && addresses.length > 0) {
+      setAddressRecord(addresses[0].id);
     }
   };
 
@@ -133,10 +145,10 @@ function PaymentPage() {
 
     const required = [
       address.fullName,
-      address.phone,
-      address.line1,
+      address.phoneNumber,
+      address.addressLine1,
       address.city,
-      address.pin,
+      address.pinCode,
     ];
 
     const hasEmptyField = required.some(
@@ -159,17 +171,13 @@ function PaymentPage() {
       return;
     }
 
-    if (
-      paymentMethod === "upi" &&
-      String(upiId ?? "").trim() === ""
-    ) {
+    if (paymentMethod === "upi" && String(upiId ?? "").trim() === "") {
       toast.warning("Enter UPI ID");
       return;
     }
 
     try {
       await saveOrUpdateAddress();
-
       await makePayment();
 
       toast.success("Order placed successfully!");
@@ -178,6 +186,7 @@ function PaymentPage() {
       console.error(err);
       toast.error("Payment failed");
     }
+    console.log("Address validation payload:", address);
   };
 
   return (

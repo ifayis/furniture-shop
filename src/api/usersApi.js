@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./axios";
 
 export const getAllUsers = async () => {
   const res = await api.get("/api/users/All");
