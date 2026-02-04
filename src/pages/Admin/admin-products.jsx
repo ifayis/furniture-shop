@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "@/css/Admin-Side//admin-products.css";
 
+import {
+  getAllProducts,
+  addProduct,
+  activateProduct,
+  deactivateProduct,
+  deleteProduct,
+} from "@/api/productsApi";
+
 function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({
@@ -16,21 +24,20 @@ function AdminProducts() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProducts();
+    loadProducts();
   }, []);
 
-  const fetchProducts = () => {
-    fetch("https://furniture-shop-asjh.onrender.com/products")
-      .then((res) => res.json())
-      // IMPORTANT: admin sees ALL products (even hidden)
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Error fetching products:", err));
+  const loadProducts = async () => {
+    try {
+      const data = await getAllProducts();
+      setProducts(data);
+    } catch (err) {
+      console.error("Failed to load products", err);
+    }
   };
 
   const handleAdd = async () => {
-    if (!form.name || !form.price || !form.category || !form.image) {
-      return;
-    }
+    if (!form.name || !form.price || !form.category || !form.image) return;
 
     const duplicate = products.find(
       (p) => p.name.toLowerCase() === form.name.toLowerCase()
@@ -40,58 +47,54 @@ function AdminProducts() {
       return;
     }
 
-    const newProduct = {
-      ...form,
-      price: Number(form.price),
-      isActive: true,
-    };
+    try {
+      await addProduct({
+        ...form,
+        price: Number(form.price),
+      });
 
-    await fetch("https://furniture-shop-asjh.onrender.com/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newProduct),
-    });
-
-    fetchProducts();
-    setForm({
-      name: "",
-      category: "",
-      price: "",
-      image: "",
-      description: "",
-    });
-    setEditingId(null);
+      await loadProducts();
+      setForm({
+        name: "",
+        category: "",
+        price: "",
+        image: "",
+        description: "",
+      });
+      setEditingId(null);
+    } catch (err) {
+      console.error("Add product failed", err);
+    }
   };
 
   const handleToggleVisibility = async (id) => {
     const product = products.find((p) => p.id === id);
     if (!product) return;
 
-    const newStatus = product.isActive === false ? true : false;
-
-    await fetch(
-      `https://furniture-shop-asjh.onrender.com/products/${id}`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isActive: newStatus }),
+    try {
+      if (product.isActive === false) {
+        await activateProduct(id);
+      } else {
+        await deactivateProduct(id);
       }
-    );
-    fetchProducts();
+      await loadProducts();
+    } catch (err) {
+      console.error("Toggle visibility failed", err);
+    }
   };
 
   const handlePermanentDelete = async (id) => {
-  if (!window.confirm("Are you sure you want to permanently delete this product?")) {
-    return;
-  }
+    if (!window.confirm("Are you sure you want to permanently delete this product?")) {
+      return;
+    }
 
-  await fetch(`https://furniture-shop-asjh.onrender.com/products/${id}`, {
-    method: "DELETE",
-  });
-
-  fetchProducts();
-};
-
+    try {
+      await deleteProduct(id);
+      await loadProducts();
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
+  };
 
   const handleUpdate = (id) => {
     setEditingId(id);
@@ -107,6 +110,7 @@ function AdminProducts() {
   return (
     <div className="admin-products-container">
       <div className="admin-products-content">
+
         {/* Header */}
         <div className="admin-header">
           <div>
@@ -129,7 +133,6 @@ function AdminProducts() {
               {editingId ? "Update Product" : "Add Product"}.
             </span>
           </div>
-
           <div className="form-grid">
             <div className="form-group">
               <label>Product Name</label>
