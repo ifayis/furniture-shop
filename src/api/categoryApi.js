@@ -9,3 +9,4 @@ export const getCategoryById = async (id) => {
   const response = await api.get(`/api/categories/${id}`);
   return response.data.data;
 };
+

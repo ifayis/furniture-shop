@@ -3,10 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import "@/css/Admin-Side//admin-edit-product.css";
 
 import { getProductById, updateProduct } from "@/api/productApi";
+import { getAllCategories } from "@/api/categoryApi";
 
 function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+
 
   const [form, setForm] = useState({
     name: "",
@@ -17,39 +20,49 @@ function EditProduct() {
   });
 
   useEffect(() => {
-    const loadProduct = async () => {
+    const loadProductAndCategories = async () => {
       try {
-        const data = await getProductById(id);
+        const [product, cats] = await Promise.all([
+          getProductById(id),
+          getAllCategories(),
+        ]);
+
+        setCategories(cats);
 
         setForm({
-          name: data.name || "",
-          category: data.category || "",
-          price: data.price ?? "",
-          image: data.image || "",
-          description: data.description || "",
+          name: product.name || "",
+          category: product.categoryId || product.category || "",
+          price: product.price ?? "",
+          image: product.image || "",
+          description: product.description || "",
         });
       } catch (err) {
-        console.error("Error fetching product:", err);
+        console.error(err);
       }
     };
 
-    loadProduct();
+    loadProductAndCategories();
   }, [id]);
 
   const handleUpdate = async () => {
-    if (!form.name || !form.category || !form.price || !form.image) {
+
+    if (!form.name || !form.category || !form.price) {
       return;
     }
 
     try {
-      await updateProduct(id, {
-        ...form,
+
+      const res = await updateProduct(id, {
+        name: form.name,
+        categoryId: form.category,
         price: Number(form.price),
+        image: form.image,
+        description: form.description,
       });
 
       navigate("/admin-products");
     } catch (err) {
-      console.error("Error updating product:", err);
+      console.error("Update failed:", err?.response?.data || err);
     }
   };
 
@@ -90,14 +103,11 @@ function EditProduct() {
                 }
               >
                 <option value="">Select a category</option>
-                <option value="chair">Chair</option>
-                <option value="table">Table</option>
-                <option value="sofa">Sofa</option>
-                <option value="sheorack">Shoe Rack</option>
-                <option value="teapoy">Teapoy</option>
-                <option value="shelves">Shelves</option>
-                <option value="almirah">Almirah</option>
-                <option value="bench">Bench</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -117,7 +127,7 @@ function EditProduct() {
             </div>
 
             <div className="form-group">
-              <label>Image Name</label>
+              <label>Image Url</label>
               <input
                 className="form-input"
                 placeholder="eg. chair1.jpg"
@@ -142,7 +152,7 @@ function EditProduct() {
             </div>
 
             <div className="form-actions">
-              <button className="primary-btn" onClick={handleUpdate}>
+              <button type="button" className="primary-btn" onClick={handleUpdate}>
                 Update Product
               </button>
               <button

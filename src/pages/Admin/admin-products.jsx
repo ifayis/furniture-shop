@@ -9,6 +9,7 @@ import {
   deactivateProduct,
   deleteProduct,
 } from "@/api/productApi";
+import { getAllCategories } from "@/api/categoryApi";
 
 function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -19,12 +20,14 @@ function AdminProducts() {
     image: "",
     description: "",
   });
+  const [categories, setCategories] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [editingId, setEditingId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     loadProducts();
+    loadCategories();
   }, []);
 
   const loadProducts = async () => {
@@ -36,8 +39,17 @@ function AdminProducts() {
     }
   };
 
+  const loadCategories = async () => {
+    try {
+      const data = await getAllCategories();
+      setCategories(data);
+    } catch (err) {
+      console.error("Failed to load categories", err);
+    }
+  };
+
   const handleAdd = async () => {
-    if (!form.name || !form.price || !form.category || !form.image) return;
+    if (!form.name || !form.price || !form.category) return;
 
     const duplicate = products.find(
       (p) => p.name.toLowerCase() === form.name.toLowerCase()
@@ -49,9 +61,13 @@ function AdminProducts() {
 
     try {
       await addProduct({
-        ...form,
+        name: form.name,
+        categoryId: form.category,
         price: Number(form.price),
+        image: form.image,
+        description: form.description,
       });
+
 
       await loadProducts();
       setForm({
@@ -102,8 +118,7 @@ function AdminProducts() {
   };
 
   const filtered = products.filter(
-    (p) => categoryFilter === "All" || p.category === categoryFilter
-  );
+    (p) => categoryFilter === "All" || p.category === categoryFilter);
 
   const activeCount = products.filter((p) => p.isActive !== false).length;
 
@@ -153,19 +168,15 @@ function AdminProducts() {
                 }
               >
                 <option value="">Select category</option>
-                <option value="chair">Chair</option>
-                <option value="table">Table</option>
-                <option value="sofa">Sofa</option>
-                <option value="sheorack">Shoe Rack</option>
-                <option value="teapoy">Teapoy</option>
-                <option value="shelves">Shelves</option>
-                <option value="almirah">Almirah</option>
-                <option value="bench">Bench</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
               </select>
             </div>
-
             <div className="form-group">
-              <label>Price ($)</label>
+              <label>Price (₹)</label>
               <input
                 type="number"
                 min="0"
@@ -220,14 +231,11 @@ function AdminProducts() {
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
             <option value="All">All Categories</option>
-            <option value="chair">Chair</option>
-            <option value="table">Table</option>
-            <option value="sofa">Sofa</option>
-            <option value="sheorack">Shoe Rack</option>
-            <option value="teapoy">Teapoy</option>
-            <option value="shelves">Shelves</option>
-            <option value="almirah">Almirah</option>
-            <option value="bench">Bench</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -252,7 +260,7 @@ function AdminProducts() {
                   <div className="product-header-row">
                     <h3>{p.name}</h3>
                     <span className="product-price">
-                      ${p.price.toLocaleString()}
+                      ₹{p.price.toLocaleString()}
                     </span>
                   </div>
 
